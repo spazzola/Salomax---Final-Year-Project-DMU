@@ -69,7 +69,6 @@ public class EmployeeServiceTest {
         EmployeeDto employeeDto = EmployeeDto.builder()
                 .name("")
                 .password(VALID_PASSWORD)
-                .name(VALID_NAME)
                 .surname(VALID_SURNAME)
                 .phoneNumber(VALID_PHONE_NUMBER)
                 .email(VALID_EMAIL)

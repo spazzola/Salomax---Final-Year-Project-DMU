@@ -17,6 +17,5 @@ public class UserDetails {
     private String surname;
     private String phoneNumber;
     private String email;
-    private Studio assignedStudio;
 
 }

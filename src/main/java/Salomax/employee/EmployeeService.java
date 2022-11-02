@@ -30,7 +30,7 @@ public class EmployeeService {
 //        if (userDetailsService.validateNameOrSurname(employeeDto.getLogin())) {
 //            messageException += "Employee's login cannot be empty. ";
 //        }
-        if (userDetailsService.validateNameOrSurname(employeeDto.getName())) {
+        if (!userDetailsService.validateNameOrSurname(employeeDto.getName())) {
             messageException = "Employee's name cannot be empty. ";
         }
 //        if (userDetailsService.validateNameOrSurname(employeeDto.getSurname())) {

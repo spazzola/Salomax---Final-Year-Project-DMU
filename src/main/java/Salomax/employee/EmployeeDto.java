@@ -14,8 +14,8 @@ public class EmployeeDto extends UserDetails {
 
     @Builder
     public EmployeeDto(Long id, String login, String password, String name, String surname, String phoneNumber,
-                    String email, int workHours, String workRole, String note, Studio assignedStudio) {
-        super(id, login, password, name, surname, phoneNumber, email, assignedStudio);
+                    String email, int workHours, String workRole, String note) {
+        super(id, login, password, name, surname, phoneNumber, email);
         this.workHours = workHours;
         this.workRole = workRole;
         this.note = note;
