@@ -19,4 +19,5 @@ public class StudioDto {
     private String email;
     private Address address;
     private List<Client> assignedClients;
+
 }
