@@ -33,4 +33,5 @@ public class Studio {
     public int hashCode() {
         return Objects.hash(nip);
     }
+
 }
