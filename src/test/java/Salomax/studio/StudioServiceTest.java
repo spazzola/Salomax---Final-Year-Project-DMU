@@ -2,14 +2,10 @@ package Salomax.studio;
 
 import Salomax.address.Address;
 import Salomax.address.AddressService;
-import Salomax.client.Client;
 import Salomax.userDetails.UserDetailsService;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
@@ -23,13 +19,12 @@ public class StudioServiceTest {
     private String VALID_REGON;
     private String VALID_PHONE_NUMBER;
     private String VALID_EMAIL;
-    private Address VALID_ADDRESS;
-
+    //private Address VALID_ADDRESS;
     private String VALID_LOGIN;
     private String VALID_PASSWORD;
     private String VALID_EMPLOYEE_NAME;
     private String VALID_EMPLOYEE_SURNAME;
-    private List<Client> VALID_ASSIGNED_CLIENTS;
+    //private List<Client> VALID_ASSIGNED_CLIENTS;
     private Studio VALID_STUDIO;
     private StudioService studioService;
 
@@ -48,8 +43,8 @@ public class StudioServiceTest {
         VALID_PASSWORD = "GM4l!";
         VALID_EMPLOYEE_NAME = "qwerty";
         VALID_EMPLOYEE_SURNAME = "idk";
-        VALID_ADDRESS = Address.builder().build();
-        VALID_ASSIGNED_CLIENTS = new ArrayList<>();
+        //VALID_ADDRESS = Address.builder().build();
+        //VALID_ASSIGNED_CLIENTS = new ArrayList<>();
 
         VALID_STUDIO = Studio.builder()
                 .name(VALID_STUDIO_NAME)
@@ -57,8 +52,8 @@ public class StudioServiceTest {
                 .regon(VALID_REGON)
                 .phoneNumber(VALID_PHONE_NUMBER)
                 .email(VALID_EMAIL)
-                .address(VALID_ADDRESS)
-                .assignedClients(VALID_ASSIGNED_CLIENTS)
+                //.address(VALID_ADDRESS)
+                //.assignedClients(VALID_ASSIGNED_CLIENTS)
                 .build();
     }
 
@@ -71,8 +66,8 @@ public class StudioServiceTest {
                 .studioName("BeautyS")
                 .nip("3818483497")
                 .regon("058205731")
-                .phoneNumber("123456789")
-                .email("test@t.x")
+                .studioPhoneNumber("123456789")
+                .studioEmail("test@t.x")
                 .address(address)
                 .login("xyz")
                 .password("GM4l!")
@@ -88,15 +83,55 @@ public class StudioServiceTest {
     }
 
     @Test
-    public void createStudioInvalidNameShouldThrowError() {
+    public void createStudioNameAsNullShouldThrowError() {
         //given
         CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
                 .studioName(null)
                 .nip(VALID_NIP)
                 .regon(VALID_REGON)
-                .phoneNumber(VALID_PHONE_NUMBER)
-                .email(VALID_EMAIL)
-                .address(VALID_ADDRESS)
+                .studioPhoneNumber(VALID_PHONE_NUMBER)
+                .studioEmail(VALID_EMAIL)
+                //.address(VALID_ADDRESS)
+                .login(VALID_LOGIN)
+                .password(VALID_PASSWORD)
+                .employeeName(VALID_EMPLOYEE_NAME)
+                .surname(VALID_EMPLOYEE_SURNAME)
+                .build();
+
+        //when then
+        assertThrows(IllegalArgumentException.class, () -> studioService.createStudioAndAdmin(createStudioRequest));
+    }
+
+    @Test
+    public void createStudioNameAsEmptyStringShouldThrowError() {
+        //given
+        CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
+                .studioName("")
+                .nip(VALID_NIP)
+                .regon(VALID_REGON)
+                .studioPhoneNumber(VALID_PHONE_NUMBER)
+                .studioEmail(VALID_EMAIL)
+                //.address(VALID_ADDRESS)
+                .login(VALID_LOGIN)
+                .password(VALID_PASSWORD)
+                .employeeName(VALID_EMPLOYEE_NAME)
+                .surname(VALID_EMPLOYEE_SURNAME)
+                .build();
+
+        //when then
+        assertThrows(IllegalArgumentException.class, () -> studioService.createStudioAndAdmin(createStudioRequest));
+    }
+
+    @Test
+    public void createStudioNameAsStringWithWhiteSpaceShouldThrowError() {
+        //given
+        CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
+                .studioName(" ")
+                .nip(VALID_NIP)
+                .regon(VALID_REGON)
+                .studioPhoneNumber(VALID_PHONE_NUMBER)
+                .studioEmail(VALID_EMAIL)
+                //.address(VALID_ADDRESS)
                 .login(VALID_LOGIN)
                 .password(VALID_PASSWORD)
                 .employeeName(VALID_EMPLOYEE_NAME)
@@ -114,9 +149,9 @@ public class StudioServiceTest {
                 .studioName(VALID_STUDIO_NAME)
                 .nip("381848349")
                 .regon(VALID_REGON)
-                .phoneNumber(VALID_PHONE_NUMBER)
-                .email(VALID_EMAIL)
-                .address(VALID_ADDRESS)
+                .studioPhoneNumber(VALID_PHONE_NUMBER)
+                .studioEmail(VALID_EMAIL)
+                //.address(VALID_ADDRESS)
                 .login(VALID_LOGIN)
                 .password(VALID_PASSWORD)
                 .employeeName(VALID_EMPLOYEE_NAME)
@@ -134,9 +169,9 @@ public class StudioServiceTest {
                 .studioName(VALID_STUDIO_NAME)
                 .nip("3818483496")
                 .regon(VALID_REGON)
-                .phoneNumber(VALID_PHONE_NUMBER)
-                .email(VALID_EMAIL)
-                .address(VALID_ADDRESS)
+                .studioPhoneNumber(VALID_PHONE_NUMBER)
+                .studioEmail(VALID_EMAIL)
+                //.address(VALID_ADDRESS)
                 .login(VALID_LOGIN)
                 .password(VALID_PASSWORD)
                 .employeeName(VALID_EMPLOYEE_NAME)
@@ -154,9 +189,9 @@ public class StudioServiceTest {
                 .studioName(VALID_STUDIO_NAME)
                 .nip(VALID_NIP)
                 .regon("058205732")
-                .phoneNumber(VALID_PHONE_NUMBER)
-                .email(VALID_EMAIL)
-                .address(VALID_ADDRESS)
+                .studioPhoneNumber(VALID_PHONE_NUMBER)
+                .studioEmail(VALID_EMAIL)
+                //.address(VALID_ADDRESS)
                 .login(VALID_LOGIN)
                 .password(VALID_PASSWORD)
                 .employeeName(VALID_EMPLOYEE_NAME)
@@ -174,9 +209,9 @@ public class StudioServiceTest {
                 .studioName(VALID_STUDIO_NAME)
                 .nip(VALID_NIP)
                 .regon(VALID_REGON)
-                .phoneNumber("1234569")
-                .email(VALID_EMAIL)
-                .address(VALID_ADDRESS)
+                .studioPhoneNumber("1234569")
+                .studioEmail(VALID_EMAIL)
+                //.address(VALID_ADDRESS)
                 .login(VALID_LOGIN)
                 .password(VALID_PASSWORD)
                 .employeeName(VALID_EMPLOYEE_NAME)
@@ -194,9 +229,9 @@ public class StudioServiceTest {
                 .studioName(VALID_STUDIO_NAME)
                 .nip(VALID_NIP)
                 .regon(VALID_REGON)
-                .phoneNumber(VALID_PHONE_NUMBER)
-                .email("dsds.pl")
-                .address(VALID_ADDRESS)
+                .studioPhoneNumber(VALID_PHONE_NUMBER)
+                .studioEmail("dsds.pl")
+                //.address(VALID_ADDRESS)
                 .login(VALID_LOGIN)
                 .password(VALID_PASSWORD)
                 .employeeName(VALID_EMPLOYEE_NAME)
