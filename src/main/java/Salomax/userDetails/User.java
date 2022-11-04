@@ -1,14 +1,14 @@
 package Salomax.userDetails;
 
-import Salomax.studio.Studio;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDetails {
+public class User {
 
     private Long id;
     private String login;

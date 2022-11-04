@@ -1,9 +1,8 @@
 package Salomax.client;
 
-import Salomax.studio.Studio;
-import Salomax.userDetails.UserDetails;
+import Salomax.userDetails.User;
 
-public class Client extends UserDetails {
+public class Client extends User {
 
     public Client(Long id, String login, String password, String name, String surname,
                   String phoneNumber, String email) {

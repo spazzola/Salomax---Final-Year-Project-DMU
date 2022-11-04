@@ -1,14 +1,12 @@
 package Salomax.employee;
 
 import Salomax.studio.Studio;
-import Salomax.userDetails.UserDetails;
+import Salomax.userDetails.User;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 
 @Data
-public class Employee extends UserDetails {
+public class Employee extends User {
 
     private int workHours;
     private String workRole;
