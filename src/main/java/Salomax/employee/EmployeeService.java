@@ -1,6 +1,6 @@
 package Salomax.employee;
 
-import Salomax.userDetails.UserDetailsService;
+import Salomax.userDetails.UserService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.stereotype.Service;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class EmployeeService {
 
-    private UserDetailsService userDetailsService;
+    private UserService userService;
 
     public Employee createEmployee(EmployeeDto employeeDto) {
         validate(employeeDto);
@@ -30,7 +30,7 @@ public class EmployeeService {
 //        if (userDetailsService.validateNameOrSurname(employeeDto.getLogin())) {
 //            messageException += "Employee's login cannot be empty. ";
 //        }
-        if (!userDetailsService.validateNameOrSurname(employeeDto.getName())) {
+        if (!userService.validateNameOrSurname(employeeDto.getName())) {
             messageException = "Employee's name cannot be empty. ";
         }
 //        if (userDetailsService.validateNameOrSurname(employeeDto.getSurname())) {

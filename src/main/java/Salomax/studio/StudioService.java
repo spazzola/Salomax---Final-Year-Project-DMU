@@ -2,9 +2,10 @@ package Salomax.studio;
 
 import Salomax.address.AddressService;
 import Salomax.employee.Employee;
-import Salomax.employee.EmployeeService;
+import Salomax.employee.EmployeeDto;
+import Salomax.employee.EmployeeMapper;
 import Salomax.employee.WorkRole;
-import Salomax.userDetails.UserDetailsService;
+import Salomax.userDetails.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +14,11 @@ import org.springframework.stereotype.Service;
 public class StudioService {
 
     private AddressService addressService;
-    private UserDetailsService userDetailsService;
+    private UserService userService;
+    private StudioMapper studioMapper;
+    private EmployeeMapper employeeMapper;
 
-    public Studio createStudioAndAdmin(CreateStudioRequest createStudioRequest) {
+    public CreateStudioResponse createStudioAndAdmin(CreateStudioRequest createStudioRequest) {
         try {
             validate(createStudioRequest);
         } catch (IllegalArgumentException exception) {
@@ -26,12 +29,18 @@ public class StudioService {
         Employee admin = createAdmin(createStudioRequest);
         admin.setAssignedStudio(studio);
 
-        return studio;
+        StudioDto studioDto = studioMapper.toDto(studio);
+        EmployeeDto adminDto = employeeMapper.toDto(admin);
+
+        return CreateStudioResponse.builder()
+                .studioDto(studioDto)
+                .employeeDto(adminDto)
+                .build();
     }
 
     private void validate(CreateStudioRequest createStudioRequest) {
         String messageException = null;
-        if (!userDetailsService.validateNameOrSurname(createStudioRequest.getStudioName())) {
+        if (!userService.validateNameOrSurname(createStudioRequest.getStudioName())) {
             messageException += "Studio's name cannot be empty. ";
         }
         if (!validateNIP(createStudioRequest.getNip())) {
@@ -40,15 +49,18 @@ public class StudioService {
         if (!validateRegon(createStudioRequest.getRegon())) {
             messageException += "Bad value of REGON number. ";
         }
-        if (!userDetailsService.validatePhoneNumber(createStudioRequest.getStudioPhoneNumber())) {
+        if (!userService.validatePhoneNumber(createStudioRequest.getStudioPhoneNumber())) {
             messageException += "Bad value of phone number. ";
         }
-        if (!userDetailsService.validateEmail(createStudioRequest.getStudioEmail())) {
+        if (!userService.validateEmail(createStudioRequest.getStudioEmail())) {
             messageException += "Bad email. ";
         }
         if (messageException != null) {
             throw new IllegalArgumentException(messageException);
         }
+
+        //TODO validate admin's data
+
 
         addressService.validateAddress();
     }
@@ -70,8 +82,8 @@ public class StudioService {
                 .password(createStudioRequest.getPassword())
                 .name(createStudioRequest.getEmployeeName())
                 .surname(createStudioRequest.getSurname())
-                .phoneNumber(createStudioRequest.getStudioPhoneNumber())
-                .email(createStudioRequest.getStudioEmail())
+                .phoneNumber(createStudioRequest.getEmployeePhoneNumber())
+                .email(createStudioRequest.getEmployeeEmail())
                 .workRole(WorkRole.ADMIN.getRole())
                 .build();
     }

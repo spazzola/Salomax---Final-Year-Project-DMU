@@ -1,7 +1,6 @@
 package Salomax.employee;
 
-import Salomax.studio.StudioDto;
-import Salomax.userDetails.UserDetailsService;
+import Salomax.userDetails.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,8 +22,8 @@ public class EmployeeServiceTest {
 
     @Before
     public void setUp() {
-        UserDetailsService userDetailsService = new UserDetailsService();
-        employeeService = new EmployeeService(userDetailsService);
+        UserService userService = new UserService();
+        employeeService = new EmployeeService(userService);
 
         VALID_LOGIN = "abc";
         VALID_PASSWORD = "123";

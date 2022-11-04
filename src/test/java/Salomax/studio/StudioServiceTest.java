@@ -2,15 +2,18 @@ package Salomax.studio;
 
 import Salomax.address.Address;
 import Salomax.address.AddressService;
-import Salomax.userDetails.UserDetailsService;
+import Salomax.employee.EmployeeMapper;
+import Salomax.userDetails.UserService;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.runner.RunWith;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 
-@SpringBootTest
+@RunWith(MockitoJUnitRunner.class)
 public class StudioServiceTest {
 
     // VALID TEST DATA
@@ -24,15 +27,21 @@ public class StudioServiceTest {
     private String VALID_PASSWORD;
     private String VALID_EMPLOYEE_NAME;
     private String VALID_EMPLOYEE_SURNAME;
-    //private List<Client> VALID_ASSIGNED_CLIENTS;
-    private Studio VALID_STUDIO;
+    private StudioDto VALID_STUDIO;
     private StudioService studioService;
+    private UserService userService;
+    @Autowired
+    private EmployeeMapper employeeMapper;
+    @Autowired
+    private StudioMapper studioMapper;
 
     @Before
     public void setUp() {
         AddressService addressService = new AddressService();
-        UserDetailsService userDetailsService = new UserDetailsService();
-        studioService = new StudioService(addressService, userDetailsService);
+        userService = new UserService();
+        employeeMapper = new EmployeeMapper();
+        studioMapper = new StudioMapper();
+        studioService = new StudioService(addressService, userService, studioMapper, employeeMapper);
 
         VALID_STUDIO_NAME = "BeautyS";
         VALID_NIP = "3818483497";
@@ -43,17 +52,13 @@ public class StudioServiceTest {
         VALID_PASSWORD = "GM4l!";
         VALID_EMPLOYEE_NAME = "qwerty";
         VALID_EMPLOYEE_SURNAME = "idk";
-        //VALID_ADDRESS = Address.builder().build();
-        //VALID_ASSIGNED_CLIENTS = new ArrayList<>();
 
-        VALID_STUDIO = Studio.builder()
+        VALID_STUDIO = StudioDto.builder()
                 .name(VALID_STUDIO_NAME)
                 .nip(VALID_NIP)
                 .regon(VALID_REGON)
                 .phoneNumber(VALID_PHONE_NUMBER)
                 .email(VALID_EMAIL)
-                //.address(VALID_ADDRESS)
-                //.assignedClients(VALID_ASSIGNED_CLIENTS)
                 .build();
     }
 
@@ -61,7 +66,6 @@ public class StudioServiceTest {
     public void createStudioValidDataShouldPass() {
         //given
         Address address = Address.builder().build();
-        //List<Client> assignedClients = new ArrayList<>();
         CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
                 .studioName("BeautyS")
                 .nip("3818483497")
@@ -76,10 +80,10 @@ public class StudioServiceTest {
                 .build();
 
         //when
-        Studio studio = studioService.createStudioAndAdmin(createStudioRequest);
+        CreateStudioResponse createStudioResponse = studioService.createStudioAndAdmin(createStudioRequest);
 
         //then
-        assertEquals(VALID_STUDIO, studio);
+        assertEquals(VALID_STUDIO, createStudioResponse.getStudioDto());
     }
 
     @Test
@@ -91,7 +95,6 @@ public class StudioServiceTest {
                 .regon(VALID_REGON)
                 .studioPhoneNumber(VALID_PHONE_NUMBER)
                 .studioEmail(VALID_EMAIL)
-                //.address(VALID_ADDRESS)
                 .login(VALID_LOGIN)
                 .password(VALID_PASSWORD)
                 .employeeName(VALID_EMPLOYEE_NAME)
@@ -111,7 +114,6 @@ public class StudioServiceTest {
                 .regon(VALID_REGON)
                 .studioPhoneNumber(VALID_PHONE_NUMBER)
                 .studioEmail(VALID_EMAIL)
-                //.address(VALID_ADDRESS)
                 .login(VALID_LOGIN)
                 .password(VALID_PASSWORD)
                 .employeeName(VALID_EMPLOYEE_NAME)
@@ -131,7 +133,6 @@ public class StudioServiceTest {
                 .regon(VALID_REGON)
                 .studioPhoneNumber(VALID_PHONE_NUMBER)
                 .studioEmail(VALID_EMAIL)
-                //.address(VALID_ADDRESS)
                 .login(VALID_LOGIN)
                 .password(VALID_PASSWORD)
                 .employeeName(VALID_EMPLOYEE_NAME)
@@ -151,7 +152,6 @@ public class StudioServiceTest {
                 .regon(VALID_REGON)
                 .studioPhoneNumber(VALID_PHONE_NUMBER)
                 .studioEmail(VALID_EMAIL)
-                //.address(VALID_ADDRESS)
                 .login(VALID_LOGIN)
                 .password(VALID_PASSWORD)
                 .employeeName(VALID_EMPLOYEE_NAME)
@@ -171,7 +171,6 @@ public class StudioServiceTest {
                 .regon(VALID_REGON)
                 .studioPhoneNumber(VALID_PHONE_NUMBER)
                 .studioEmail(VALID_EMAIL)
-                //.address(VALID_ADDRESS)
                 .login(VALID_LOGIN)
                 .password(VALID_PASSWORD)
                 .employeeName(VALID_EMPLOYEE_NAME)
@@ -191,7 +190,6 @@ public class StudioServiceTest {
                 .regon("058205732")
                 .studioPhoneNumber(VALID_PHONE_NUMBER)
                 .studioEmail(VALID_EMAIL)
-                //.address(VALID_ADDRESS)
                 .login(VALID_LOGIN)
                 .password(VALID_PASSWORD)
                 .employeeName(VALID_EMPLOYEE_NAME)
@@ -211,7 +209,6 @@ public class StudioServiceTest {
                 .regon(VALID_REGON)
                 .studioPhoneNumber("1234569")
                 .studioEmail(VALID_EMAIL)
-                //.address(VALID_ADDRESS)
                 .login(VALID_LOGIN)
                 .password(VALID_PASSWORD)
                 .employeeName(VALID_EMPLOYEE_NAME)
@@ -231,7 +228,6 @@ public class StudioServiceTest {
                 .regon(VALID_REGON)
                 .studioPhoneNumber(VALID_PHONE_NUMBER)
                 .studioEmail("dsds.pl")
-                //.address(VALID_ADDRESS)
                 .login(VALID_LOGIN)
                 .password(VALID_PASSWORD)
                 .employeeName(VALID_EMPLOYEE_NAME)
@@ -240,6 +236,30 @@ public class StudioServiceTest {
 
         //when then
         assertThrows(IllegalArgumentException.class, () -> studioService.createStudioAndAdmin(createStudioRequest));
+    }
+
+    @Test
+    public void createStudioAndAdminCheckIfUserWithAdminPrivilegesWasCreated() {
+        //create studio and user
+        //given
+        CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
+                .studioName(VALID_STUDIO_NAME)
+                .nip(VALID_NIP)
+                .regon(VALID_REGON)
+                .studioPhoneNumber(VALID_PHONE_NUMBER)
+                .studioEmail(VALID_EMAIL)
+                .login(VALID_LOGIN)
+                .password(VALID_PASSWORD)
+                .employeeName(VALID_EMPLOYEE_NAME)
+                .surname(VALID_EMPLOYEE_SURNAME)
+                .build();
+
+        //Studio studio = studioService.createStudioAndAdmin(createStudioRequest);
+
+        //when
+
+        //get user by studio id
+        //check if user's assigned studio is same as created studio
     }
 
 }
