@@ -1,9 +1,12 @@
 package Salomax.address;
 
 import lombok.Builder;
+import lombok.Data;
+import lombok.Getter;
 
+@Getter
 @Builder
-public class Address {
+public class AddressDto {
 
     private String country;
     private String voivodeship;
