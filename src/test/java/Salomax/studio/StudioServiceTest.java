@@ -1,6 +1,7 @@
 package Salomax.studio;
 
 import Salomax.address.Address;
+import Salomax.address.AddressDto;
 import Salomax.address.AddressService;
 import Salomax.employee.EmployeeDto;
 import Salomax.employee.EmployeeMapper;
@@ -25,22 +26,22 @@ public class StudioServiceTest {
     private String VALID_REGON;
     private String VALID_PHONE_NUMBER;
     private String VALID_EMAIL;
-    //private Address VALID_ADDRESS;
     private String VALID_LOGIN;
     private String VALID_PASSWORD;
     private String VALID_EMPLOYEE_NAME;
     private String VALID_EMPLOYEE_SURNAME;
     private StudioDto VALID_STUDIO;
     private EmployeeDto VALID_EMPLOYEE;
+    private AddressDto VALID_ADDRESS;
     private StudioService studioService;
 
     @Before
     public void setUp() {
-        AddressService addressService = new AddressService();
         UserService userService = new UserService();
         EmployeeService employeeService = new EmployeeService(userService);
         EmployeeMapper employeeMapper = new EmployeeMapper();
         StudioMapper studioMapper = new StudioMapper();
+        AddressService addressService = new AddressService(userService);
         studioService = new StudioService(addressService, userService, employeeService, studioMapper, employeeMapper);
 
         VALID_STUDIO_NAME = "BeautyS";
@@ -69,6 +70,15 @@ public class StudioServiceTest {
                 .phoneNumber(VALID_PHONE_NUMBER)
                 .email(VALID_EMAIL)
                 .build();
+
+        VALID_ADDRESS = AddressDto.builder()
+                .country("Ybx")
+                .voivodeship("Dbc")
+                .city("Jsn")
+                .postalCode("00-000")
+                .street("uhjj")
+                .houseNumber("s3d")
+                .build();
     }
 
     @Test
@@ -86,6 +96,7 @@ public class StudioServiceTest {
         CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
                 .studioDto(studioDto)
                 .employeeDto(VALID_EMPLOYEE)
+                .addressDto(VALID_ADDRESS)
                 .build();
 
         //when
@@ -109,6 +120,7 @@ public class StudioServiceTest {
         CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
                 .studioDto(studioDto)
                 .employeeDto(VALID_EMPLOYEE)
+                .addressDto(VALID_ADDRESS)
                 .build();
 
         //when then
@@ -129,6 +141,7 @@ public class StudioServiceTest {
         CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
                 .studioDto(studioDto)
                 .employeeDto(VALID_EMPLOYEE)
+                .addressDto(VALID_ADDRESS)
                 .build();
 
         //when then
@@ -149,6 +162,7 @@ public class StudioServiceTest {
         CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
                 .studioDto(studioDto)
                 .employeeDto(VALID_EMPLOYEE)
+                .addressDto(VALID_ADDRESS)
                 .build();
 
         //when then
@@ -169,6 +183,7 @@ public class StudioServiceTest {
         CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
                 .studioDto(studioDto)
                 .employeeDto(VALID_EMPLOYEE)
+                .addressDto(VALID_ADDRESS)
                 .build();
 
         //when then
@@ -189,6 +204,7 @@ public class StudioServiceTest {
         CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
                 .studioDto(studioDto)
                 .employeeDto(VALID_EMPLOYEE)
+                .addressDto(VALID_ADDRESS)
                 .build();
 
         //when then
@@ -209,6 +225,7 @@ public class StudioServiceTest {
         CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
                 .studioDto(studioDto)
                 .employeeDto(VALID_EMPLOYEE)
+                .addressDto(VALID_ADDRESS)
                 .build();
 
         //when then
@@ -229,6 +246,7 @@ public class StudioServiceTest {
         CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
                 .studioDto(studioDto)
                 .employeeDto(VALID_EMPLOYEE)
+                .addressDto(VALID_ADDRESS)
                 .build();
 
         //when then
@@ -249,6 +267,7 @@ public class StudioServiceTest {
         CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
                 .studioDto(studioDto)
                 .employeeDto(VALID_EMPLOYEE)
+                .addressDto(VALID_ADDRESS)
                 .build();
 
         //when then
@@ -279,6 +298,7 @@ public class StudioServiceTest {
         CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
                 .studioDto(studioDto)
                 .employeeDto(adminDto)
+                .addressDto(VALID_ADDRESS)
                 .build();
 
         //when
