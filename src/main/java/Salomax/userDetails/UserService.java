@@ -1,14 +1,12 @@
 package Salomax.userDetails;
 
-import Salomax.employee.Employee;
-import Salomax.employee.EmployeeDto;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
 
 
-    public boolean validateNameOrSurname(String nameOrSurname) {
+    public boolean validateName(String nameOrSurname) {
         return validateString(nameOrSurname);
     }
 

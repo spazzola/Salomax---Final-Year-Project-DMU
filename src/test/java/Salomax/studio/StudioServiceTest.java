@@ -2,7 +2,10 @@ package Salomax.studio;
 
 import Salomax.address.Address;
 import Salomax.address.AddressService;
+import Salomax.employee.EmployeeDto;
 import Salomax.employee.EmployeeMapper;
+import Salomax.employee.EmployeeService;
+import Salomax.employee.WorkRole;
 import Salomax.userDetails.UserService;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,20 +31,17 @@ public class StudioServiceTest {
     private String VALID_EMPLOYEE_NAME;
     private String VALID_EMPLOYEE_SURNAME;
     private StudioDto VALID_STUDIO;
+    private EmployeeDto VALID_EMPLOYEE;
     private StudioService studioService;
-    private UserService userService;
-    @Autowired
-    private EmployeeMapper employeeMapper;
-    @Autowired
-    private StudioMapper studioMapper;
 
     @Before
     public void setUp() {
         AddressService addressService = new AddressService();
-        userService = new UserService();
-        employeeMapper = new EmployeeMapper();
-        studioMapper = new StudioMapper();
-        studioService = new StudioService(addressService, userService, studioMapper, employeeMapper);
+        UserService userService = new UserService();
+        EmployeeService employeeService = new EmployeeService(userService);
+        EmployeeMapper employeeMapper = new EmployeeMapper();
+        StudioMapper studioMapper = new StudioMapper();
+        studioService = new StudioService(addressService, userService, employeeService, studioMapper, employeeMapper);
 
         VALID_STUDIO_NAME = "BeautyS";
         VALID_NIP = "3818483497";
@@ -60,23 +60,32 @@ public class StudioServiceTest {
                 .phoneNumber(VALID_PHONE_NUMBER)
                 .email(VALID_EMAIL)
                 .build();
+
+        VALID_EMPLOYEE = EmployeeDto.builder()
+                .login(VALID_LOGIN)
+                .password(VALID_PASSWORD)
+                .name(VALID_EMPLOYEE_NAME)
+                .surname(VALID_EMPLOYEE_SURNAME)
+                .phoneNumber(VALID_PHONE_NUMBER)
+                .email(VALID_EMAIL)
+                .build();
     }
 
     @Test
     public void createStudioValidDataShouldPass() {
         //given
-        Address address = Address.builder().build();
+        //Address address = Address.builder().build();
+        StudioDto studioDto = StudioDto.builder()
+                .name(VALID_STUDIO_NAME)
+                .nip(VALID_NIP)
+                .regon(VALID_REGON)
+                .phoneNumber(VALID_PHONE_NUMBER)
+                .email(VALID_EMAIL)
+                .build();
+
         CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
-                .studioName("BeautyS")
-                .nip("3818483497")
-                .regon("058205731")
-                .studioPhoneNumber("123456789")
-                .studioEmail("test@t.x")
-                .address(address)
-                .login("xyz")
-                .password("GM4l!")
-                .employeeName("qwerty")
-                .surname("idk")
+                .studioDto(studioDto)
+                .employeeDto(VALID_EMPLOYEE)
                 .build();
 
         //when
@@ -89,16 +98,17 @@ public class StudioServiceTest {
     @Test
     public void createStudioNameAsNullShouldThrowError() {
         //given
-        CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
-                .studioName(null)
+        StudioDto studioDto = StudioDto.builder()
+                .name(null)
                 .nip(VALID_NIP)
                 .regon(VALID_REGON)
-                .studioPhoneNumber(VALID_PHONE_NUMBER)
-                .studioEmail(VALID_EMAIL)
-                .login(VALID_LOGIN)
-                .password(VALID_PASSWORD)
-                .employeeName(VALID_EMPLOYEE_NAME)
-                .surname(VALID_EMPLOYEE_SURNAME)
+                .phoneNumber(VALID_PHONE_NUMBER)
+                .email(VALID_EMAIL)
+                .build();
+
+        CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
+                .studioDto(studioDto)
+                .employeeDto(VALID_EMPLOYEE)
                 .build();
 
         //when then
@@ -108,16 +118,17 @@ public class StudioServiceTest {
     @Test
     public void createStudioNameAsEmptyStringShouldThrowError() {
         //given
-        CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
-                .studioName("")
+        StudioDto studioDto = StudioDto.builder()
+                .name("")
                 .nip(VALID_NIP)
                 .regon(VALID_REGON)
-                .studioPhoneNumber(VALID_PHONE_NUMBER)
-                .studioEmail(VALID_EMAIL)
-                .login(VALID_LOGIN)
-                .password(VALID_PASSWORD)
-                .employeeName(VALID_EMPLOYEE_NAME)
-                .surname(VALID_EMPLOYEE_SURNAME)
+                .phoneNumber(VALID_PHONE_NUMBER)
+                .email(VALID_EMAIL)
+                .build();
+
+        CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
+                .studioDto(studioDto)
+                .employeeDto(VALID_EMPLOYEE)
                 .build();
 
         //when then
@@ -127,16 +138,17 @@ public class StudioServiceTest {
     @Test
     public void createStudioNameAsStringWithWhiteSpaceShouldThrowError() {
         //given
-        CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
-                .studioName(" ")
+        StudioDto studioDto = StudioDto.builder()
+                .name(" ")
                 .nip(VALID_NIP)
                 .regon(VALID_REGON)
-                .studioPhoneNumber(VALID_PHONE_NUMBER)
-                .studioEmail(VALID_EMAIL)
-                .login(VALID_LOGIN)
-                .password(VALID_PASSWORD)
-                .employeeName(VALID_EMPLOYEE_NAME)
-                .surname(VALID_EMPLOYEE_SURNAME)
+                .phoneNumber(VALID_PHONE_NUMBER)
+                .email(VALID_EMAIL)
+                .build();
+
+        CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
+                .studioDto(studioDto)
+                .employeeDto(VALID_EMPLOYEE)
                 .build();
 
         //when then
@@ -146,16 +158,17 @@ public class StudioServiceTest {
     @Test
     public void createStudioInvalidNipLengthShouldThrowError() {
         //given
-        CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
-                .studioName(VALID_STUDIO_NAME)
+        StudioDto studioDto = StudioDto.builder()
+                .name(VALID_STUDIO_NAME)
                 .nip("381848349")
                 .regon(VALID_REGON)
-                .studioPhoneNumber(VALID_PHONE_NUMBER)
-                .studioEmail(VALID_EMAIL)
-                .login(VALID_LOGIN)
-                .password(VALID_PASSWORD)
-                .employeeName(VALID_EMPLOYEE_NAME)
-                .surname(VALID_EMPLOYEE_SURNAME)
+                .phoneNumber(VALID_PHONE_NUMBER)
+                .email(VALID_EMAIL)
+                .build();
+
+        CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
+                .studioDto(studioDto)
+                .employeeDto(VALID_EMPLOYEE)
                 .build();
 
         //when then
@@ -165,16 +178,17 @@ public class StudioServiceTest {
     @Test
     public void createStudioInvalidNipValueShouldThrowError() {
         //given
-        CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
-                .studioName(VALID_STUDIO_NAME)
+        StudioDto studioDto = StudioDto.builder()
+                .name(VALID_STUDIO_NAME)
                 .nip("3818483496")
                 .regon(VALID_REGON)
-                .studioPhoneNumber(VALID_PHONE_NUMBER)
-                .studioEmail(VALID_EMAIL)
-                .login(VALID_LOGIN)
-                .password(VALID_PASSWORD)
-                .employeeName(VALID_EMPLOYEE_NAME)
-                .surname(VALID_EMPLOYEE_SURNAME)
+                .phoneNumber(VALID_PHONE_NUMBER)
+                .email(VALID_EMAIL)
+                .build();
+
+        CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
+                .studioDto(studioDto)
+                .employeeDto(VALID_EMPLOYEE)
                 .build();
 
         //when then
@@ -184,16 +198,17 @@ public class StudioServiceTest {
     @Test
     public void createStudioInvalidRegonValueShouldThrowError() {
         //given
-        CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
-                .studioName(VALID_STUDIO_NAME)
+        StudioDto studioDto = StudioDto.builder()
+                .name(VALID_STUDIO_NAME)
                 .nip(VALID_NIP)
                 .regon("058205732")
-                .studioPhoneNumber(VALID_PHONE_NUMBER)
-                .studioEmail(VALID_EMAIL)
-                .login(VALID_LOGIN)
-                .password(VALID_PASSWORD)
-                .employeeName(VALID_EMPLOYEE_NAME)
-                .surname(VALID_EMPLOYEE_SURNAME)
+                .phoneNumber(VALID_PHONE_NUMBER)
+                .email(VALID_EMAIL)
+                .build();
+
+        CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
+                .studioDto(studioDto)
+                .employeeDto(VALID_EMPLOYEE)
                 .build();
 
         //when then
@@ -203,16 +218,17 @@ public class StudioServiceTest {
     @Test
     public void createStudioTooShortPhoneNumberShouldThrowError() {
         //given
-        CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
-                .studioName(VALID_STUDIO_NAME)
+        StudioDto studioDto = StudioDto.builder()
+                .name(VALID_STUDIO_NAME)
                 .nip(VALID_NIP)
                 .regon(VALID_REGON)
-                .studioPhoneNumber("1234569")
-                .studioEmail(VALID_EMAIL)
-                .login(VALID_LOGIN)
-                .password(VALID_PASSWORD)
-                .employeeName(VALID_EMPLOYEE_NAME)
-                .surname(VALID_EMPLOYEE_SURNAME)
+                .phoneNumber("1234569")
+                .email(VALID_EMAIL)
+                .build();
+
+        CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
+                .studioDto(studioDto)
+                .employeeDto(VALID_EMPLOYEE)
                 .build();
 
         //when then
@@ -222,16 +238,17 @@ public class StudioServiceTest {
     @Test
     public void createStudioWrongEmailShouldThrowError() {
         //given
-        CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
-                .studioName(VALID_STUDIO_NAME)
+        StudioDto studioDto = StudioDto.builder()
+                .name(VALID_STUDIO_NAME)
                 .nip(VALID_NIP)
                 .regon(VALID_REGON)
-                .studioPhoneNumber(VALID_PHONE_NUMBER)
-                .studioEmail("dsds.pl")
-                .login(VALID_LOGIN)
-                .password(VALID_PASSWORD)
-                .employeeName(VALID_EMPLOYEE_NAME)
-                .surname(VALID_EMPLOYEE_SURNAME)
+                .phoneNumber(VALID_PHONE_NUMBER)
+                .email("dsds.pl")
+                .build();
+
+        CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
+                .studioDto(studioDto)
+                .employeeDto(VALID_EMPLOYEE)
                 .build();
 
         //when then
@@ -242,24 +259,32 @@ public class StudioServiceTest {
     public void createStudioAndAdminCheckIfUserWithAdminPrivilegesWasCreated() {
         //create studio and user
         //given
-        CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
-                .studioName(VALID_STUDIO_NAME)
+        StudioDto studioDto = StudioDto.builder()
+                .name(VALID_STUDIO_NAME)
                 .nip(VALID_NIP)
                 .regon(VALID_REGON)
-                .studioPhoneNumber(VALID_PHONE_NUMBER)
-                .studioEmail(VALID_EMAIL)
-                .login(VALID_LOGIN)
-                .password(VALID_PASSWORD)
-                .employeeName(VALID_EMPLOYEE_NAME)
-                .surname(VALID_EMPLOYEE_SURNAME)
+                .phoneNumber(VALID_PHONE_NUMBER)
+                .email(VALID_EMAIL)
                 .build();
 
-        //Studio studio = studioService.createStudioAndAdmin(createStudioRequest);
+        EmployeeDto adminDto = EmployeeDto.builder()
+                .login(VALID_LOGIN)
+                .password(VALID_PASSWORD)
+                .name(VALID_EMPLOYEE_NAME)
+                .surname(VALID_EMPLOYEE_SURNAME)
+                .phoneNumber(VALID_PHONE_NUMBER)
+                .email(VALID_EMAIL)
+                .build();
+
+        CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
+                .studioDto(studioDto)
+                .employeeDto(adminDto)
+                .build();
 
         //when
+        CreateStudioResponse createStudioResponse = studioService.createStudioAndAdmin(createStudioRequest);
 
-        //get user by studio id
-        //check if user's assigned studio is same as created studio
+        assertEquals(WorkRole.ADMIN.getRole(), createStudioResponse.getEmployeeDto().getWorkRole());
     }
 
 }
