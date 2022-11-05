@@ -1,10 +1,7 @@
 package Salomax.studio;
 
 import Salomax.address.AddressService;
-import Salomax.employee.Employee;
-import Salomax.employee.EmployeeDto;
-import Salomax.employee.EmployeeMapper;
-import Salomax.employee.WorkRole;
+import Salomax.employee.*;
 import Salomax.userDetails.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,18 +12,19 @@ public class StudioService {
 
     private AddressService addressService;
     private UserService userService;
+    private EmployeeService employeeService;
     private StudioMapper studioMapper;
     private EmployeeMapper employeeMapper;
 
     public CreateStudioResponse createStudioAndAdmin(CreateStudioRequest createStudioRequest) {
         try {
-            validate(createStudioRequest);
+            validateRequest(createStudioRequest);
         } catch (IllegalArgumentException exception) {
             throw new IllegalArgumentException(exception.getMessage());
         }
 
         Studio studio = createStudio(createStudioRequest);
-        Employee admin = createAdmin(createStudioRequest);
+        Employee admin = employeeService.createAdmin(createStudioRequest.getEmployeeDto());
         admin.setAssignedStudio(studio);
 
         StudioDto studioDto = studioMapper.toDto(studio);
@@ -38,53 +36,48 @@ public class StudioService {
                 .build();
     }
 
-    private void validate(CreateStudioRequest createStudioRequest) {
-        String messageException = null;
-        if (!userService.validateNameOrSurname(createStudioRequest.getStudioName())) {
-            messageException += "Studio's name cannot be empty. ";
-        }
-        if (!validateNIP(createStudioRequest.getNip())) {
-            messageException += "Bad value of NIP number. ";
-        }
-        if (!validateRegon(createStudioRequest.getRegon())) {
-            messageException += "Bad value of REGON number. ";
-        }
-        if (!userService.validatePhoneNumber(createStudioRequest.getStudioPhoneNumber())) {
-            messageException += "Bad value of phone number. ";
-        }
-        if (!userService.validateEmail(createStudioRequest.getStudioEmail())) {
-            messageException += "Bad email. ";
-        }
-        if (messageException != null) {
+    private void validateRequest(CreateStudioRequest createStudioRequest) {
+        String messageException = "";
+
+        messageException = validateStudio(createStudioRequest.getStudioDto());
+        messageException += employeeService.validateEmployee(createStudioRequest.getEmployeeDto());
+        messageException += addressService.validateAddress(createStudioRequest.getAddressDto());
+
+        if (!messageException.equals("")) {
             throw new IllegalArgumentException(messageException);
         }
+    }
 
-        //TODO validate admin's data
+    private String validateStudio(StudioDto studioDto) {
+        String messageException = "";
+        if (!userService.validateName(studioDto.getName())) {
+            messageException += "Bad value of studio's name. ";
+        }
+        if (!validateNIP(studioDto.getNip())) {
+            messageException += "Bad value of NIP number. ";
+        }
+        if (!validateRegon(studioDto.getRegon())) {
+            messageException += "Bad value of REGON number. ";
+        }
+        if (!userService.validatePhoneNumber(studioDto.getPhoneNumber())) {
+            messageException += "Bad value of studio's phone number. ";
+        }
+        if (!userService.validateEmail(studioDto.getEmail())) {
+            messageException += "Bad value of studio's email. ";
+        }
 
-
-        addressService.validateAddress();
+        return messageException;
     }
 
     private Studio createStudio(CreateStudioRequest createStudioRequest) {
+        StudioDto studioDto = createStudioRequest.getStudioDto();
         return Studio.builder()
-                .name(createStudioRequest.getStudioName())
-                .nip(createStudioRequest.getNip())
-                .regon(createStudioRequest.getRegon())
-                .phoneNumber(createStudioRequest.getStudioPhoneNumber())
-                .email(createStudioRequest.getStudioEmail())
-                .address(createStudioRequest.getAddress())
-                .build();
-    }
-
-    private Employee createAdmin(CreateStudioRequest createStudioRequest) {
-        return Employee.builder()
-                .login(createStudioRequest.getLogin())
-                .password(createStudioRequest.getPassword())
-                .name(createStudioRequest.getEmployeeName())
-                .surname(createStudioRequest.getSurname())
-                .phoneNumber(createStudioRequest.getEmployeePhoneNumber())
-                .email(createStudioRequest.getEmployeeEmail())
-                .workRole(WorkRole.ADMIN.getRole())
+                .name(studioDto.getName())
+                .nip(studioDto.getNip())
+                .regon(studioDto.getRegon())
+                .phoneNumber(studioDto.getPhoneNumber())
+                .email(studioDto.getEmail())
+                .address(studioDto.getAddress())
                 .build();
     }
 
