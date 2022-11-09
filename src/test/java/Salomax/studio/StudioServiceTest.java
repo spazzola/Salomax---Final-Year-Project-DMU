@@ -1,6 +1,5 @@
 package Salomax.studio;
 
-import Salomax.address.Address;
 import Salomax.address.AddressDto;
 import Salomax.address.AddressService;
 import Salomax.employee.EmployeeDto;
@@ -11,11 +10,15 @@ import Salomax.userDetails.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class StudioServiceTest {
@@ -30,19 +33,22 @@ public class StudioServiceTest {
     private String VALID_PASSWORD;
     private String VALID_EMPLOYEE_NAME;
     private String VALID_EMPLOYEE_SURNAME;
-    private StudioDto VALID_STUDIO;
-    private EmployeeDto VALID_EMPLOYEE;
-    private AddressDto VALID_ADDRESS;
+    private StudioDto VALID_STUDIO_DTO;
+    private EmployeeDto VALID_EMPLOYEE_DTO;
+    private AddressDto VALID_ADDRESS_DTO;
     private StudioService studioService;
+    @Mock
+    private StudioDao studioDao;
 
     @Before
     public void setUp() {
+        studioDao = mock(StudioDao.class);
         UserService userService = new UserService();
         EmployeeService employeeService = new EmployeeService(userService);
         EmployeeMapper employeeMapper = new EmployeeMapper();
         StudioMapper studioMapper = new StudioMapper();
         AddressService addressService = new AddressService(userService);
-        studioService = new StudioService(addressService, userService, employeeService, studioMapper, employeeMapper);
+        studioService = new StudioService(studioDao, addressService, userService, employeeService, studioMapper, employeeMapper);
 
         VALID_STUDIO_NAME = "BeautyS";
         VALID_NIP = "3818483497";
@@ -54,7 +60,7 @@ public class StudioServiceTest {
         VALID_EMPLOYEE_NAME = "qwerty";
         VALID_EMPLOYEE_SURNAME = "idk";
 
-        VALID_STUDIO = StudioDto.builder()
+        VALID_STUDIO_DTO = StudioDto.builder()
                 .name(VALID_STUDIO_NAME)
                 .nip(VALID_NIP)
                 .regon(VALID_REGON)
@@ -62,7 +68,7 @@ public class StudioServiceTest {
                 .email(VALID_EMAIL)
                 .build();
 
-        VALID_EMPLOYEE = EmployeeDto.builder()
+        VALID_EMPLOYEE_DTO = EmployeeDto.builder()
                 .login(VALID_LOGIN)
                 .password(VALID_PASSWORD)
                 .name(VALID_EMPLOYEE_NAME)
@@ -71,7 +77,7 @@ public class StudioServiceTest {
                 .email(VALID_EMAIL)
                 .build();
 
-        VALID_ADDRESS = AddressDto.builder()
+        VALID_ADDRESS_DTO = AddressDto.builder()
                 .country("Ybx")
                 .voivodeship("Dbc")
                 .city("Jsn")
@@ -79,6 +85,15 @@ public class StudioServiceTest {
                 .street("uhjj")
                 .houseNumber("s3d")
                 .build();
+
+        Studio studio = Studio.builder().build();
+        when(studioDao.findById(1L)).thenReturn(Optional.of(Studio.builder()
+                        .name(VALID_STUDIO_NAME)
+                        .nip(VALID_NIP)
+                        .regon(VALID_REGON)
+                        .phoneNumber(VALID_PHONE_NUMBER)
+                        .email(VALID_EMAIL)
+                        .build()));
     }
 
     @Test
@@ -95,15 +110,15 @@ public class StudioServiceTest {
 
         CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
                 .studioDto(studioDto)
-                .employeeDto(VALID_EMPLOYEE)
-                .addressDto(VALID_ADDRESS)
+                .employeeDto(VALID_EMPLOYEE_DTO)
+                .addressDto(VALID_ADDRESS_DTO)
                 .build();
 
         //when
         CreateStudioResponse createStudioResponse = studioService.createStudioAndAdmin(createStudioRequest);
 
         //then
-        assertEquals(VALID_STUDIO, createStudioResponse.getStudioDto());
+        assertEquals(VALID_STUDIO_DTO, createStudioResponse.getStudioDto());
     }
 
     @Test
@@ -119,8 +134,8 @@ public class StudioServiceTest {
 
         CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
                 .studioDto(studioDto)
-                .employeeDto(VALID_EMPLOYEE)
-                .addressDto(VALID_ADDRESS)
+                .employeeDto(VALID_EMPLOYEE_DTO)
+                .addressDto(VALID_ADDRESS_DTO)
                 .build();
 
         //when then
@@ -140,8 +155,8 @@ public class StudioServiceTest {
 
         CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
                 .studioDto(studioDto)
-                .employeeDto(VALID_EMPLOYEE)
-                .addressDto(VALID_ADDRESS)
+                .employeeDto(VALID_EMPLOYEE_DTO)
+                .addressDto(VALID_ADDRESS_DTO)
                 .build();
 
         //when then
@@ -161,8 +176,8 @@ public class StudioServiceTest {
 
         CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
                 .studioDto(studioDto)
-                .employeeDto(VALID_EMPLOYEE)
-                .addressDto(VALID_ADDRESS)
+                .employeeDto(VALID_EMPLOYEE_DTO)
+                .addressDto(VALID_ADDRESS_DTO)
                 .build();
 
         //when then
@@ -182,8 +197,8 @@ public class StudioServiceTest {
 
         CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
                 .studioDto(studioDto)
-                .employeeDto(VALID_EMPLOYEE)
-                .addressDto(VALID_ADDRESS)
+                .employeeDto(VALID_EMPLOYEE_DTO)
+                .addressDto(VALID_ADDRESS_DTO)
                 .build();
 
         //when then
@@ -203,8 +218,8 @@ public class StudioServiceTest {
 
         CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
                 .studioDto(studioDto)
-                .employeeDto(VALID_EMPLOYEE)
-                .addressDto(VALID_ADDRESS)
+                .employeeDto(VALID_EMPLOYEE_DTO)
+                .addressDto(VALID_ADDRESS_DTO)
                 .build();
 
         //when then
@@ -224,8 +239,8 @@ public class StudioServiceTest {
 
         CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
                 .studioDto(studioDto)
-                .employeeDto(VALID_EMPLOYEE)
-                .addressDto(VALID_ADDRESS)
+                .employeeDto(VALID_EMPLOYEE_DTO)
+                .addressDto(VALID_ADDRESS_DTO)
                 .build();
 
         //when then
@@ -245,8 +260,8 @@ public class StudioServiceTest {
 
         CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
                 .studioDto(studioDto)
-                .employeeDto(VALID_EMPLOYEE)
-                .addressDto(VALID_ADDRESS)
+                .employeeDto(VALID_EMPLOYEE_DTO)
+                .addressDto(VALID_ADDRESS_DTO)
                 .build();
 
         //when then
@@ -266,8 +281,8 @@ public class StudioServiceTest {
 
         CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
                 .studioDto(studioDto)
-                .employeeDto(VALID_EMPLOYEE)
-                .addressDto(VALID_ADDRESS)
+                .employeeDto(VALID_EMPLOYEE_DTO)
+                .addressDto(VALID_ADDRESS_DTO)
                 .build();
 
         //when then
@@ -298,13 +313,108 @@ public class StudioServiceTest {
         CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
                 .studioDto(studioDto)
                 .employeeDto(adminDto)
-                .addressDto(VALID_ADDRESS)
+                .addressDto(VALID_ADDRESS_DTO)
                 .build();
 
         //when
         CreateStudioResponse createStudioResponse = studioService.createStudioAndAdmin(createStudioRequest);
 
         assertEquals(WorkRole.ADMIN.getRole(), createStudioResponse.getEmployeeDto().getWorkRole());
+    }
+
+    @Test
+    public void updateStudioCheckIfNameWasUpdated() {
+        //given
+        StudioDto studioDto = StudioDto.builder()
+                .id(1L)
+                .name("new name")
+                .nip(VALID_NIP)
+                .regon(VALID_REGON)
+                .phoneNumber(VALID_PHONE_NUMBER)
+                .email(VALID_EMAIL)
+                .build();
+
+        //when
+        Studio studio = studioService.updateStudio(studioDto);
+
+        //then
+        assertEquals("new name", studio.getName());
+    }
+
+    @Test
+    public void updateStudioCheckIfNipWasUpdated() {
+        //given
+        StudioDto studioDto = StudioDto.builder()
+                .id(1L)
+                .name(VALID_STUDIO_NAME)
+                .nip("1564710668")
+                .regon(VALID_REGON)
+                .phoneNumber(VALID_PHONE_NUMBER)
+                .email(VALID_EMAIL)
+                .build();
+
+        //when
+        Studio studio = studioService.updateStudio(studioDto);
+
+        //then
+        assertEquals("1564710668", studio.getNip());
+    }
+
+    @Test
+    public void updateStudioCheckIfRegonWasUpdated() {
+        //given
+        StudioDto studioDto = StudioDto.builder()
+                .id(1L)
+                .name(VALID_STUDIO_NAME)
+                .nip(VALID_NIP)
+                .regon("092533555")
+                .phoneNumber(VALID_PHONE_NUMBER)
+                .email(VALID_EMAIL)
+                .build();
+
+        //when
+        Studio studio = studioService.updateStudio(studioDto);
+
+        //then
+        assertEquals("092533555", studio.getRegon());
+    }
+
+    @Test
+    public void updateStudioCheckIfPhoneNumberWasUpdated() {
+        //given
+        StudioDto studioDto = StudioDto.builder()
+                .id(1L)
+                .name(VALID_STUDIO_NAME)
+                .nip(VALID_NIP)
+                .regon(VALID_REGON)
+                .phoneNumber("111222333")
+                .email(VALID_EMAIL)
+                .build();
+
+        //when
+        Studio studio = studioService.updateStudio(studioDto);
+
+        //then
+        assertEquals("111222333", studio.getPhoneNumber());
+    }
+
+    @Test
+    public void updateStudioCheckIfMailWasUpdated() {
+        //given
+        StudioDto studioDto = StudioDto.builder()
+                .id(1L)
+                .name(VALID_STUDIO_NAME)
+                .nip(VALID_NIP)
+                .regon(VALID_REGON)
+                .phoneNumber(VALID_PHONE_NUMBER)
+                .email("p@x.p")
+                .build();
+
+        //when
+        Studio studio = studioService.updateStudio(studioDto);
+
+        //then
+        assertEquals("p@x.p", studio.getEmail());
     }
 
 }

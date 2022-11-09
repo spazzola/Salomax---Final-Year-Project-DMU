@@ -4,12 +4,14 @@ import Salomax.address.AddressService;
 import Salomax.employee.*;
 import Salomax.userDetails.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
 public class StudioService {
 
+    private StudioDao studioDao;
     private AddressService addressService;
     private UserService userService;
     private EmployeeService employeeService;
@@ -34,6 +36,34 @@ public class StudioService {
                 .studioDto(studioDto)
                 .employeeDto(adminDto)
                 .build();
+    }
+
+    public Studio updateStudio(StudioDto studioDto) {
+        String messageException = validateStudio(studioDto);
+        if (messageException.length() > 1) {
+            throw new IllegalArgumentException(messageException);
+        }
+
+        Studio studio = studioDao.findById(studioDto.getId())
+                .orElseThrow();
+
+        if (!studio.getName().equals(studioDto.getName())) {
+            studio.setName(studioDto.getName());
+        }
+        if (!studio.getNip().equals(studioDto.getNip())) {
+            studio.setNip(studioDto.getNip());
+        }
+        if (!studio.getRegon().equals(studioDto.getRegon())) {
+            studio.setRegon(studioDto.getRegon());
+        }
+        if (!studio.getPhoneNumber().equals(studioDto.getPhoneNumber())) {
+            studio.setPhoneNumber(studioDto.getPhoneNumber());
+        }
+        if (!studio.getEmail().equals(studioDto.getEmail())) {
+            studio.setEmail(studioDto.getEmail());
+        }
+
+        return studio;
     }
 
     private void validateRequest(CreateStudioRequest createStudioRequest) {
