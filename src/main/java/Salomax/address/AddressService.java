@@ -10,6 +10,21 @@ public class AddressService {
 
     private UserService userService;
 
+    public Address createAddress(AddressDto addressDto) {
+        String messageException = validateAddress(addressDto);
+        if (messageException.length() > 1) {
+            throw new IllegalArgumentException(messageException);
+        }
+
+        return Address.builder()
+                .country(addressDto.getCountry())
+                .voivodeship(addressDto.getVoivodeship())
+                .city(addressDto.getCity())
+                .postalCode(addressDto.getPostalCode())
+                .street(addressDto.getStreet())
+                .houseNumber(addressDto.getHouseNumber())
+                .build();
+    }
 
     public String validateAddress(AddressDto addressDto) {
         String messageException = "";
