@@ -17,7 +17,7 @@ public class StudioMapper {
                 .phoneNumber(studio.getPhoneNumber())
                 .email(studio.getEmail())
                 .address(studio.getAddress())
-                .assignedClients(studio.getAssignedClients())
+                //.assignedClients(studio.getAssignedClients())
                 .build();
     }
 
