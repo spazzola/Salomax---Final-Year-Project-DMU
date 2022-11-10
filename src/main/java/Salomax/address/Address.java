@@ -1,12 +1,15 @@
 package Salomax.address;
 
 import lombok.Builder;
+import lombok.Data;
 
 import java.util.Objects;
 
+@Data
 @Builder
 public class Address {
 
+    private Long id;
     private String country;
     private String voivodeship;
     private String city;
