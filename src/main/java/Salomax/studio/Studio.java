@@ -1,25 +1,40 @@
 package Salomax.studio;
 
 import Salomax.address.Address;
-import Salomax.client.Client;
+import Salomax.assignedClients.AssignedClients;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
 
+@Entity
+@Table(name = "studios")
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Studio {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "studio_id")
     private Long id;
     private String name;
     private String nip;
     private String regon;
     private String phoneNumber;
     private String email;
+
+    @OneToOne
+    @JoinColumn(name = "address_fk")
     private Address address;
-    private List<Client> assignedClients;
+
+    @OneToMany(mappedBy = "studio")
+    private List<AssignedClients> assignedClients;
 
     @Override
     public boolean equals(Object o) {

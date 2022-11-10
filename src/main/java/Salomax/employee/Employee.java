@@ -2,15 +2,30 @@ package Salomax.employee;
 
 import Salomax.studio.Studio;
 import Salomax.userDetails.User;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "employees")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Employee extends User {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "employee_id")
+    private Long id;
     private int workHours;
     private String workRole;
     private String note;
+
+    @OneToOne
+    @JoinColumn(name = "studio_fk")
     private Studio assignedStudio;
 
     @Builder

@@ -1,14 +1,24 @@
 package Salomax.address;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.util.Objects;
 
+@Entity
+@Table(name = "addresses")
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Address {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "address_id")
     private Long id;
     private String country;
     private String voivodeship;
