@@ -44,6 +44,7 @@ public class StudioService {
             throw new IllegalArgumentException(messageException);
         }
 
+
         Studio studio = studioDao.findById(studioDto.getId())
                 .orElseThrow();
 

@@ -1,5 +1,6 @@
 package Salomax.studio;
 
+import Salomax.address.AddressDao;
 import Salomax.address.AddressDto;
 import Salomax.address.AddressService;
 import Salomax.employee.EmployeeDto;
@@ -39,15 +40,18 @@ public class StudioServiceTest {
     private StudioService studioService;
     @Mock
     private StudioDao studioDao;
+    @Mock
+    private AddressDao addressDao;
 
     @Before
     public void setUp() {
         studioDao = mock(StudioDao.class);
+        addressDao = mock(AddressDao.class);
         UserService userService = new UserService();
         EmployeeService employeeService = new EmployeeService(userService);
         EmployeeMapper employeeMapper = new EmployeeMapper();
         StudioMapper studioMapper = new StudioMapper();
-        AddressService addressService = new AddressService(userService);
+        AddressService addressService = new AddressService(userService, addressDao);
         studioService = new StudioService(studioDao, addressService, userService, employeeService, studioMapper, employeeMapper);
 
         VALID_STUDIO_NAME = "BeautyS";
