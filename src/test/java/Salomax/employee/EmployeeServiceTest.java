@@ -3,10 +3,15 @@ package Salomax.employee;
 import Salomax.userDetails.UserService;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
+import static org.mockito.AdditionalAnswers.returnsFirstArg;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 public class EmployeeServiceTest {
@@ -19,11 +24,14 @@ public class EmployeeServiceTest {
     private String VALID_EMAIL;
     private Employee VALID_EMPLOYEE;
     private EmployeeService employeeService;
+    @Mock
+    private EmployeeDao employeeDao;
 
     @Before
     public void setUp() {
         UserService userService = new UserService();
-        employeeService = new EmployeeService(userService);
+        employeeDao = mock(EmployeeDao.class);
+        employeeService = new EmployeeService(userService, employeeDao);
 
         VALID_LOGIN = "abc";
         VALID_PASSWORD = "123";
@@ -40,6 +48,8 @@ public class EmployeeServiceTest {
                 .phoneNumber(VALID_PHONE_NUMBER)
                 .email(VALID_EMAIL)
                 .build();
+
+        when(employeeDao.save(Mockito.any(Employee.class))).then(returnsFirstArg());
     }
 
 
@@ -54,6 +64,8 @@ public class EmployeeServiceTest {
                 .phoneNumber("123456789")
                 .email("test@x.z")
                 .build();
+
+        VALID_EMPLOYEE.setWorkRole(WorkRole.EMPLOYEE);
 
         //when
         Employee employee = employeeService.createEmployee(employeeDto);

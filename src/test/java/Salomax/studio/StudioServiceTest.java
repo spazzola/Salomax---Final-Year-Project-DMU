@@ -1,21 +1,20 @@
 package Salomax.studio;
 
-import Salomax.address.AddressDao;
-import Salomax.address.AddressDto;
-import Salomax.address.AddressMapper;
-import Salomax.address.AddressService;
+import Salomax.address.*;
 import Salomax.employee.*;
 import Salomax.userDetails.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
+import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -100,24 +99,27 @@ public class StudioServiceTest {
                         .phoneNumber(VALID_PHONE_NUMBER)
                         .email(VALID_EMAIL)
                         .build()));
+
+        when(studioDao.save(Mockito.any(Studio.class))).then(returnsFirstArg());
+        when(employeeDao.save(Mockito.any(Employee.class))).then(returnsFirstArg());
+        when(addressDao.save(Mockito.any(Address.class))).then(returnsFirstArg());
     }
 
     @Test
     public void createStudioValidDataShouldPass() {
         //given
-        //Address address = Address.builder().build();
         StudioDto studioDto = StudioDto.builder()
                 .name(VALID_STUDIO_NAME)
                 .nip(VALID_NIP)
                 .regon(VALID_REGON)
                 .phoneNumber(VALID_PHONE_NUMBER)
                 .email(VALID_EMAIL)
+                .addressDto(VALID_ADDRESS_DTO)
                 .build();
 
         CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
                 .studioDto(studioDto)
                 .employeeDto(VALID_EMPLOYEE_DTO)
-                //.addressDto(VALID_ADDRESS_DTO)
                 .build();
 
         //when
@@ -136,12 +138,12 @@ public class StudioServiceTest {
                 .regon(VALID_REGON)
                 .phoneNumber(VALID_PHONE_NUMBER)
                 .email(VALID_EMAIL)
+                .addressDto(VALID_ADDRESS_DTO)
                 .build();
 
         CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
                 .studioDto(studioDto)
                 .employeeDto(VALID_EMPLOYEE_DTO)
-                //.addressDto(VALID_ADDRESS_DTO)
                 .build();
 
         //when then
@@ -157,12 +159,12 @@ public class StudioServiceTest {
                 .regon(VALID_REGON)
                 .phoneNumber(VALID_PHONE_NUMBER)
                 .email(VALID_EMAIL)
+                .addressDto(VALID_ADDRESS_DTO)
                 .build();
 
         CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
                 .studioDto(studioDto)
                 .employeeDto(VALID_EMPLOYEE_DTO)
-                //.addressDto(VALID_ADDRESS_DTO)
                 .build();
 
         //when then
@@ -178,12 +180,12 @@ public class StudioServiceTest {
                 .regon(VALID_REGON)
                 .phoneNumber(VALID_PHONE_NUMBER)
                 .email(VALID_EMAIL)
+                .addressDto(VALID_ADDRESS_DTO)
                 .build();
 
         CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
                 .studioDto(studioDto)
                 .employeeDto(VALID_EMPLOYEE_DTO)
-                //.addressDto(VALID_ADDRESS_DTO)
                 .build();
 
         //when then
@@ -199,12 +201,12 @@ public class StudioServiceTest {
                 .regon(VALID_REGON)
                 .phoneNumber(VALID_PHONE_NUMBER)
                 .email(VALID_EMAIL)
+                .addressDto(VALID_ADDRESS_DTO)
                 .build();
 
         CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
                 .studioDto(studioDto)
                 .employeeDto(VALID_EMPLOYEE_DTO)
-                //.addressDto(VALID_ADDRESS_DTO)
                 .build();
 
         //when then
@@ -220,12 +222,12 @@ public class StudioServiceTest {
                 .regon(VALID_REGON)
                 .phoneNumber(VALID_PHONE_NUMBER)
                 .email(VALID_EMAIL)
+                .addressDto(VALID_ADDRESS_DTO)
                 .build();
 
         CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
                 .studioDto(studioDto)
                 .employeeDto(VALID_EMPLOYEE_DTO)
-                //.addressDto(VALID_ADDRESS_DTO)
                 .build();
 
         //when then
@@ -241,12 +243,12 @@ public class StudioServiceTest {
                 .regon("058205732")
                 .phoneNumber(VALID_PHONE_NUMBER)
                 .email(VALID_EMAIL)
+                .addressDto(VALID_ADDRESS_DTO)
                 .build();
 
         CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
                 .studioDto(studioDto)
                 .employeeDto(VALID_EMPLOYEE_DTO)
-                //.addressDto(VALID_ADDRESS_DTO)
                 .build();
 
         //when then
@@ -262,12 +264,12 @@ public class StudioServiceTest {
                 .regon(VALID_REGON)
                 .phoneNumber("1234569")
                 .email(VALID_EMAIL)
+                .addressDto(VALID_ADDRESS_DTO)
                 .build();
 
         CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
                 .studioDto(studioDto)
                 .employeeDto(VALID_EMPLOYEE_DTO)
-                //.addressDto(VALID_ADDRESS_DTO)
                 .build();
 
         //when then
@@ -283,12 +285,12 @@ public class StudioServiceTest {
                 .regon(VALID_REGON)
                 .phoneNumber(VALID_PHONE_NUMBER)
                 .email("dsds.pl")
+                .addressDto(VALID_ADDRESS_DTO)
                 .build();
 
         CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
                 .studioDto(studioDto)
                 .employeeDto(VALID_EMPLOYEE_DTO)
-                //.addressDto(VALID_ADDRESS_DTO)
                 .build();
 
         //when then
@@ -305,6 +307,7 @@ public class StudioServiceTest {
                 .regon(VALID_REGON)
                 .phoneNumber(VALID_PHONE_NUMBER)
                 .email(VALID_EMAIL)
+                .addressDto(VALID_ADDRESS_DTO)
                 .build();
 
         EmployeeDto adminDto = EmployeeDto.builder()
@@ -319,7 +322,6 @@ public class StudioServiceTest {
         CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
                 .studioDto(studioDto)
                 .employeeDto(adminDto)
-                //.addressDto(VALID_ADDRESS_DTO)
                 .build();
 
         //when
