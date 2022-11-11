@@ -14,7 +14,10 @@ public class EmployeeService {
     private EmployeeDao employeeDao;
 
     public Employee createEmployee(EmployeeDto employeeDto) {
-        validateEmployee(employeeDto);
+        String messageException = validateEmployee(employeeDto);
+        if (messageException.length() > 1) {
+            throw new IllegalArgumentException(messageException);
+        }
         Employee employee = buildEmployeeObject(employeeDto);
         employee.setWorkRole(WorkRole.EMPLOYEE);
 
