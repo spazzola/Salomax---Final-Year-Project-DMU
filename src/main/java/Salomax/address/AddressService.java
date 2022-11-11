@@ -18,7 +18,7 @@ public class AddressService {
             throw new IllegalArgumentException(messageException);
         }
 
-        return Address.builder()
+        Address address = Address.builder()
                 .country(addressDto.getCountry())
                 .voivodeship(addressDto.getVoivodeship())
                 .city(addressDto.getCity())
@@ -26,6 +26,8 @@ public class AddressService {
                 .street(addressDto.getStreet())
                 .houseNumber(addressDto.getHouseNumber())
                 .build();
+
+        return addressDao.save(address);
     }
 
     public Address updateAddress(AddressDto addressDto) {
@@ -56,7 +58,7 @@ public class AddressService {
             address.setHouseNumber(addressDto.getHouseNumber());
         }
 
-        return address;
+        return addressDao.save(address);
     }
 
     public String validateAddress(AddressDto addressDto) {

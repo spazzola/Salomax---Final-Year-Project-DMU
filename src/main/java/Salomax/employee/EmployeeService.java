@@ -18,7 +18,7 @@ public class EmployeeService {
         Employee employee = buildEmployeeObject(employeeDto);
         employee.setWorkRole(WorkRole.EMPLOYEE);
 
-        return employee;
+        return employeeDao.save(employee);
     }
 
     public Employee createAdmin(EmployeeDto employeeDto) {

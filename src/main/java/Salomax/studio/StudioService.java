@@ -32,7 +32,7 @@ public class StudioService {
         admin.setAssignedStudio(studio);
 
         studio = studioDao.save(studio);
-        
+
         StudioDto studioDto = studioMapper.toDto(studio);
         EmployeeDto adminDto = employeeMapper.toDto(admin);
 
@@ -68,7 +68,7 @@ public class StudioService {
             studio.setEmail(studioDto.getEmail());
         }
 
-        return studio;
+        return studioDao.save(studio);
     }
 
     private void validateRequest(CreateStudioRequest createStudioRequest) {
