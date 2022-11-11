@@ -13,7 +13,7 @@ public class AssignedClients {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "assigned_client_id")
+    @Column(name = "id")
     private Long id;
 
     @ManyToOne

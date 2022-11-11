@@ -16,10 +16,6 @@ import javax.persistence.*;
 @AllArgsConstructor
 public class Employee extends User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "employee_id")
-    private Long id;
     private int workHours;
     private String workRole;
     private String note;

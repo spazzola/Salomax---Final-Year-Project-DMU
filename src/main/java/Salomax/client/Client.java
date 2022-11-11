@@ -15,11 +15,6 @@ import java.util.List;
 @AllArgsConstructor
 public class Client extends User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "client_id")
-    private Long id;
-
     @OneToMany(mappedBy = "client")
     private List<Salomax.assignedClients.AssignedClients> assignedClients;
 

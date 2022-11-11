@@ -21,7 +21,7 @@ public class Studio {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "studio_id")
+    @Column(name = "id")
     private Long id;
     private String name;
     private String nip;
