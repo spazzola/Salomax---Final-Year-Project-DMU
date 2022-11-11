@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 public class EmployeeService {
 
     private UserService userService;
+    private EmployeeDao employeeDao;
 
     public Employee createEmployee(EmployeeDto employeeDto) {
         validateEmployee(employeeDto);
@@ -25,7 +26,7 @@ public class EmployeeService {
         Employee admin = buildEmployeeObject(employeeDto);
         admin.setWorkRole(WorkRole.ADMIN);
 
-        return admin;
+        return employeeDao.save(admin);
     }
 
     public String validateEmployee(EmployeeDto employeeDto) {

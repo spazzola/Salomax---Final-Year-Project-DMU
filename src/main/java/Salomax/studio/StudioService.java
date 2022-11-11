@@ -31,6 +31,8 @@ public class StudioService {
         Employee admin = employeeService.createAdmin(createStudioRequest.getEmployeeDto());
         admin.setAssignedStudio(studio);
 
+        studio = studioDao.save(studio);
+        
         StudioDto studioDto = studioMapper.toDto(studio);
         EmployeeDto adminDto = employeeMapper.toDto(admin);
 
