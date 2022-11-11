@@ -1,9 +1,11 @@
 package Salomax.address;
 
+import Salomax.employee.Employee;
 import Salomax.userDetails.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -11,6 +13,7 @@ import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
+import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -59,6 +62,8 @@ public class AddressServiceTest {
                         .street(VALID_STREET)
                         .houseNumber(VALID_HOUSE_NUMBER)
                         .build()));
+
+        when(addressDao.save(Mockito.any(Address.class))).then(returnsFirstArg());
     }
 
     @Test
