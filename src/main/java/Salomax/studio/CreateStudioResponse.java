@@ -1,5 +1,6 @@
 package Salomax.studio;
 
+import Salomax.address.AddressDto;
 import Salomax.employee.EmployeeDto;
 import lombok.Builder;
 import lombok.Getter;

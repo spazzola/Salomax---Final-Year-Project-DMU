@@ -12,6 +12,5 @@ public class CreateStudioRequest {
 
     private StudioDto studioDto;
     private EmployeeDto employeeDto;
-    private AddressDto addressDto;
 
 }

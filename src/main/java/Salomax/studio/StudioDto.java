@@ -1,6 +1,6 @@
 package Salomax.studio;
 
-import Salomax.address.Address;
+import Salomax.address.AddressDto;
 import Salomax.client.Client;
 import lombok.Builder;
 import lombok.Data;
@@ -18,7 +18,7 @@ public class StudioDto {
     private String regon;
     private String phoneNumber;
     private String email;
-    private Address address;
+    private AddressDto addressDto;
     private List<Client> assignedClients;
 
 

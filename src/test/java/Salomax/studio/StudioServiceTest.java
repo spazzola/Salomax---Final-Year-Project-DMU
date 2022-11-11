@@ -2,6 +2,7 @@ package Salomax.studio;
 
 import Salomax.address.AddressDao;
 import Salomax.address.AddressDto;
+import Salomax.address.AddressMapper;
 import Salomax.address.AddressService;
 import Salomax.employee.EmployeeDto;
 import Salomax.employee.EmployeeMapper;
@@ -50,7 +51,8 @@ public class StudioServiceTest {
         UserService userService = new UserService();
         EmployeeService employeeService = new EmployeeService(userService);
         EmployeeMapper employeeMapper = new EmployeeMapper();
-        StudioMapper studioMapper = new StudioMapper();
+        AddressMapper addressMapper = new AddressMapper();
+        StudioMapper studioMapper = new StudioMapper(addressMapper);
         AddressService addressService = new AddressService(userService, addressDao);
         studioService = new StudioService(studioDao, addressService, userService, employeeService, studioMapper, employeeMapper);
 
@@ -115,7 +117,7 @@ public class StudioServiceTest {
         CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
                 .studioDto(studioDto)
                 .employeeDto(VALID_EMPLOYEE_DTO)
-                .addressDto(VALID_ADDRESS_DTO)
+                //.addressDto(VALID_ADDRESS_DTO)
                 .build();
 
         //when
@@ -139,7 +141,7 @@ public class StudioServiceTest {
         CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
                 .studioDto(studioDto)
                 .employeeDto(VALID_EMPLOYEE_DTO)
-                .addressDto(VALID_ADDRESS_DTO)
+                //.addressDto(VALID_ADDRESS_DTO)
                 .build();
 
         //when then
@@ -160,7 +162,7 @@ public class StudioServiceTest {
         CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
                 .studioDto(studioDto)
                 .employeeDto(VALID_EMPLOYEE_DTO)
-                .addressDto(VALID_ADDRESS_DTO)
+                //.addressDto(VALID_ADDRESS_DTO)
                 .build();
 
         //when then
@@ -181,7 +183,7 @@ public class StudioServiceTest {
         CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
                 .studioDto(studioDto)
                 .employeeDto(VALID_EMPLOYEE_DTO)
-                .addressDto(VALID_ADDRESS_DTO)
+                //.addressDto(VALID_ADDRESS_DTO)
                 .build();
 
         //when then
@@ -202,7 +204,7 @@ public class StudioServiceTest {
         CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
                 .studioDto(studioDto)
                 .employeeDto(VALID_EMPLOYEE_DTO)
-                .addressDto(VALID_ADDRESS_DTO)
+                //.addressDto(VALID_ADDRESS_DTO)
                 .build();
 
         //when then
@@ -223,7 +225,7 @@ public class StudioServiceTest {
         CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
                 .studioDto(studioDto)
                 .employeeDto(VALID_EMPLOYEE_DTO)
-                .addressDto(VALID_ADDRESS_DTO)
+                //.addressDto(VALID_ADDRESS_DTO)
                 .build();
 
         //when then
@@ -244,7 +246,7 @@ public class StudioServiceTest {
         CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
                 .studioDto(studioDto)
                 .employeeDto(VALID_EMPLOYEE_DTO)
-                .addressDto(VALID_ADDRESS_DTO)
+                //.addressDto(VALID_ADDRESS_DTO)
                 .build();
 
         //when then
@@ -265,7 +267,7 @@ public class StudioServiceTest {
         CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
                 .studioDto(studioDto)
                 .employeeDto(VALID_EMPLOYEE_DTO)
-                .addressDto(VALID_ADDRESS_DTO)
+                //.addressDto(VALID_ADDRESS_DTO)
                 .build();
 
         //when then
@@ -286,7 +288,7 @@ public class StudioServiceTest {
         CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
                 .studioDto(studioDto)
                 .employeeDto(VALID_EMPLOYEE_DTO)
-                .addressDto(VALID_ADDRESS_DTO)
+                //.addressDto(VALID_ADDRESS_DTO)
                 .build();
 
         //when then
@@ -317,7 +319,7 @@ public class StudioServiceTest {
         CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
                 .studioDto(studioDto)
                 .employeeDto(adminDto)
-                .addressDto(VALID_ADDRESS_DTO)
+                //.addressDto(VALID_ADDRESS_DTO)
                 .build();
 
         //when

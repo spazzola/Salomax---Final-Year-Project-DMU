@@ -1,10 +1,10 @@
 package Salomax.studio;
 
+import Salomax.address.Address;
 import Salomax.address.AddressService;
 import Salomax.employee.*;
 import Salomax.userDetails.UserService;
 import lombok.AllArgsConstructor;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -26,6 +26,8 @@ public class StudioService {
         }
 
         Studio studio = createStudio(createStudioRequest);
+        Address address = addressService.createAddress(createStudioRequest.getStudioDto().getAddressDto());
+        studio.setAddress(address);
         Employee admin = employeeService.createAdmin(createStudioRequest.getEmployeeDto());
         admin.setAssignedStudio(studio);
 
@@ -71,8 +73,8 @@ public class StudioService {
         String messageException = "";
 
         messageException = validateStudio(createStudioRequest.getStudioDto());
+        messageException += addressService.validateAddress(createStudioRequest.getStudioDto().getAddressDto());
         messageException += employeeService.validateEmployee(createStudioRequest.getEmployeeDto());
-        messageException += addressService.validateAddress(createStudioRequest.getAddressDto());
 
         if (!messageException.equals("")) {
             throw new IllegalArgumentException(messageException);
@@ -108,7 +110,6 @@ public class StudioService {
                 .regon(studioDto.getRegon())
                 .phoneNumber(studioDto.getPhoneNumber())
                 .email(studioDto.getEmail())
-                .address(studioDto.getAddress())
                 .build();
     }
 
