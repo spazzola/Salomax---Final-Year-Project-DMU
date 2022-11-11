@@ -29,7 +29,7 @@ public class Studio {
     private String phoneNumber;
     private String email;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_fk")
     private Address address;
 

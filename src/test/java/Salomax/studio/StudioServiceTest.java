@@ -4,10 +4,7 @@ import Salomax.address.AddressDao;
 import Salomax.address.AddressDto;
 import Salomax.address.AddressMapper;
 import Salomax.address.AddressService;
-import Salomax.employee.EmployeeDto;
-import Salomax.employee.EmployeeMapper;
-import Salomax.employee.EmployeeService;
-import Salomax.employee.WorkRole;
+import Salomax.employee.*;
 import Salomax.userDetails.UserService;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,13 +40,16 @@ public class StudioServiceTest {
     private StudioDao studioDao;
     @Mock
     private AddressDao addressDao;
+    @Mock
+    private EmployeeDao employeeDao;
 
     @Before
     public void setUp() {
         studioDao = mock(StudioDao.class);
         addressDao = mock(AddressDao.class);
+        employeeDao = mock(EmployeeDao.class);
         UserService userService = new UserService();
-        EmployeeService employeeService = new EmployeeService(userService);
+        EmployeeService employeeService = new EmployeeService(userService, employeeDao);
         EmployeeMapper employeeMapper = new EmployeeMapper();
         AddressMapper addressMapper = new AddressMapper();
         StudioMapper studioMapper = new StudioMapper(addressMapper);
