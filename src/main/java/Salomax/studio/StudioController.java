@@ -1,6 +1,7 @@
 package Salomax.studio;
 
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @AllArgsConstructor
@@ -21,6 +22,12 @@ public class StudioController {
     public StudioDto updateStudio(@RequestBody StudioDto studioDto) {
         Studio studio = studioService.updateStudio(studioDto);
         return studioMapper.toDto(studio);
+    }
+
+    @DeleteMapping("/delete")
+    public HttpStatus deleteStudio(@RequestParam Long id) {
+        studioService.deleteStudio(id);
+        return HttpStatus.OK;
     }
 
 }

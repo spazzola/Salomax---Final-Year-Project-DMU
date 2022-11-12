@@ -7,11 +7,14 @@ import Salomax.userDetails.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class StudioService {
 
     private StudioDao studioDao;
+    private EmployeeDao employeeDao;
     private AddressService addressService;
     private UserService userService;
     private EmployeeService employeeService;
@@ -69,6 +72,12 @@ public class StudioService {
         }
 
         return studioDao.save(studio);
+    }
+
+    public void deleteStudio(Long id) {
+        List<Employee> employees = employeeDao.findByAssignedStudioId(id);
+        employeeDao.deleteAll(employees);
+        studioDao.deleteById(id);
     }
 
     private void validateRequest(CreateStudioRequest createStudioRequest) {
