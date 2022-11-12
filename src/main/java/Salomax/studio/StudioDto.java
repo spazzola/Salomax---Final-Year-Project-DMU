@@ -5,7 +5,6 @@ import Salomax.client.Client;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.List;
 import java.util.Objects;
 
 @Data
@@ -19,7 +18,6 @@ public class StudioDto {
     private String phoneNumber;
     private String email;
     private AddressDto addressDto;
-    private List<Client> assignedClients;
 
 
     @Override
