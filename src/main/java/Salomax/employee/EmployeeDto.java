@@ -20,7 +20,6 @@ public class EmployeeDto extends User {
         this.workHours = workHours;
         this.workRole = workRole;
         this.note = note;
-        //this.assignedStudio = assignedStudio;
         this.assignedStudioId = assignedStudioId;
     }
 
