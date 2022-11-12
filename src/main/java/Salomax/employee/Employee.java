@@ -40,4 +40,14 @@ public class Employee extends User {
         this.workRole = workRole;
     }
 
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), assignedStudio);
+    }
 }
