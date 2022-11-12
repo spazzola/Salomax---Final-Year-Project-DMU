@@ -11,16 +11,17 @@ public class EmployeeDto extends User {
     private int workHours;
     private WorkRole workRole;
     private String note;
-    private Studio assignedStudio;
+    private Long assignedStudioId;
 
     @Builder
     public EmployeeDto(Long id, String login, String password, String name, String surname, String phoneNumber,
-                    String email, int workHours, WorkRole workRole, String note, Studio assignedStudio) {
+                    String email, int workHours, WorkRole workRole, String note, Long assignedStudioId) {
         super(id, login, password, name, surname, phoneNumber, email);
         this.workHours = workHours;
         this.workRole = workRole;
         this.note = note;
-        this.assignedStudio = assignedStudio;
+        //this.assignedStudio = assignedStudio;
+        this.assignedStudioId = assignedStudioId;
     }
 
 }

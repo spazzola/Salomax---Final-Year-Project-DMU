@@ -20,7 +20,7 @@ public class EmployeeMapper {
                 .workHours(employee.getWorkHours())
                 .workRole(employee.getWorkRole())
                 .note(employee.getNote())
-                .assignedStudio(employee.getAssignedStudio())
+                .assignedStudioId(employee.getAssignedStudio().getId())
                 .build();
     }
 
