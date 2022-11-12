@@ -63,6 +63,7 @@ public class EmployeeServiceTest {
                 .surname("qwe")
                 .phoneNumber("123456789")
                 .email("test@x.z")
+                .workRole(WorkRole.EMPLOYEE)
                 .build();
 
         VALID_EMPLOYEE.setWorkRole(WorkRole.EMPLOYEE);

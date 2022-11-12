@@ -327,7 +327,7 @@ public class StudioServiceTest {
         //when
         CreateStudioResponse createStudioResponse = studioService.createStudioAndAdmin(createStudioRequest);
 
-        assertEquals(WorkRole.ADMIN.getRole(), createStudioResponse.getEmployeeDto().getWorkRole());
+        assertEquals(WorkRole.OWNER, createStudioResponse.getEmployeeDto().getWorkRole());
     }
 
     @Test
