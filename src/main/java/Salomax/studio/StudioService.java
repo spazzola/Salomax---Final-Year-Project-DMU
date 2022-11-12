@@ -28,17 +28,17 @@ public class StudioService {
         Studio studio = createStudio(createStudioRequest);
         Address address = addressService.createAddress(createStudioRequest.getStudioDto().getAddressDto());
         studio.setAddress(address);
-        Employee admin = employeeService.createAdmin(createStudioRequest.getEmployeeDto());
-        admin.setAssignedStudio(studio);
+        Employee owner = employeeService.createOwner(createStudioRequest.getEmployeeDto());
+        owner.setAssignedStudio(studio);
 
         studio = studioDao.save(studio);
 
         StudioDto studioDto = studioMapper.toDto(studio);
-        EmployeeDto adminDto = employeeMapper.toDto(admin);
+        EmployeeDto ownerDto = employeeMapper.toDto(owner);
 
         return CreateStudioResponse.builder()
                 .studioDto(studioDto)
-                .employeeDto(adminDto)
+                .employeeDto(ownerDto)
                 .build();
     }
 
