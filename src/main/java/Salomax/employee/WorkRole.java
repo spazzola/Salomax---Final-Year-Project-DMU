@@ -2,6 +2,7 @@ package Salomax.employee;
 
 public enum WorkRole {
 
+    OWNER("OWNER"),
     ADMIN("ADMIN"),
     EMPLOYEE("EMPLOYEE");
 
