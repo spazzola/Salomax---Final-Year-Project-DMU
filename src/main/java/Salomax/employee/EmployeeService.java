@@ -1,5 +1,7 @@
 package Salomax.employee;
 
+import Salomax.studio.Studio;
+import Salomax.studio.StudioDao;
 import Salomax.userDetails.UserService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,24 +14,24 @@ public class EmployeeService {
 
     private UserService userService;
     private EmployeeDao employeeDao;
+    private StudioDao studioDao;
 
     public Employee createEmployee(EmployeeDto employeeDto) {
-        String messageException = validateEmployee(employeeDto);
-        if (messageException.length() > 1) {
-            throw new IllegalArgumentException(messageException);
-        }
+        validate(employeeDto);
+
         Employee employee = buildEmployeeObject(employeeDto);
         grantPrivileges(employee, employeeDto.getWorkRole().getRole());
-        employee.setAssignedStudio(employeeDto.getAssignedStudio());
+
+        Studio studio = studioDao.findById(employeeDto.getAssignedStudioId())
+                        .orElseThrow();
+        employee.setAssignedStudio(studio);
 
         return employeeDao.save(employee);
     }
 
     public Employee createOwner(EmployeeDto employeeDto) {
-        String messageException = validateEmployee(employeeDto);
-        if (messageException.length() > 1) {
-            throw new IllegalArgumentException(messageException);
-        }
+        validate(employeeDto);
+
         Employee admin = buildEmployeeObject(employeeDto);
         admin.setWorkRole(WorkRole.OWNER);
 
@@ -37,10 +39,8 @@ public class EmployeeService {
     }
 
     public Employee updateEmployee(EmployeeDto employeeDto) {
-        String messageException = validateEmployee(employeeDto);
-        if (messageException.length() > 1) {
-            throw new IllegalArgumentException(messageException);
-        }
+        validate(employeeDto);
+
         Employee employee = employeeDao.findById(employeeDto.getId())
                 .orElseThrow();
 
@@ -94,6 +94,13 @@ public class EmployeeService {
         }
 
         return messageException;
+    }
+
+    private void validate(EmployeeDto employeeDto) {
+        String messageException = validateEmployee(employeeDto);
+        if (messageException.length() > 1) {
+            throw new IllegalArgumentException(messageException);
+        }
     }
 
     private Employee buildEmployeeObject(EmployeeDto employeeDto) {

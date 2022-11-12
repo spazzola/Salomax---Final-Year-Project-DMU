@@ -48,12 +48,12 @@ public class StudioServiceTest {
         addressDao = mock(AddressDao.class);
         employeeDao = mock(EmployeeDao.class);
         UserService userService = new UserService();
-        EmployeeService employeeService = new EmployeeService(userService, employeeDao);
+        EmployeeService employeeService = new EmployeeService(userService, employeeDao, studioDao);
         EmployeeMapper employeeMapper = new EmployeeMapper();
         AddressMapper addressMapper = new AddressMapper();
         StudioMapper studioMapper = new StudioMapper(addressMapper);
         AddressService addressService = new AddressService(userService, addressDao);
-        studioService = new StudioService(studioDao, addressService, userService, employeeService, studioMapper, employeeMapper);
+        studioService = new StudioService(studioDao, employeeDao, addressService, userService, employeeService, studioMapper, employeeMapper);
 
         VALID_STUDIO_NAME = "BeautyS";
         VALID_NIP = "3818483497";
@@ -83,6 +83,7 @@ public class StudioServiceTest {
                 .build();
 
         VALID_ADDRESS_DTO = AddressDto.builder()
+                .id(1L)
                 .country("Ybx")
                 .voivodeship("Dbc")
                 .city("Jsn")
@@ -91,7 +92,6 @@ public class StudioServiceTest {
                 .houseNumber("s3d")
                 .build();
 
-        Studio studio = Studio.builder().build();
         when(studioDao.findById(1L)).thenReturn(Optional.of(Studio.builder()
                         .name(VALID_STUDIO_NAME)
                         .nip(VALID_NIP)
@@ -103,6 +103,14 @@ public class StudioServiceTest {
         when(studioDao.save(Mockito.any(Studio.class))).then(returnsFirstArg());
         when(employeeDao.save(Mockito.any(Employee.class))).then(returnsFirstArg());
         when(addressDao.save(Mockito.any(Address.class))).then(returnsFirstArg());
+        when(addressDao.findById(1L)).thenReturn(Optional.ofNullable(Address.builder()
+                .country("Ybx")
+                .voivodeship("Dbc")
+                .city("Jsn")
+                .postalCode("00-000")
+                .street("uhjj")
+                .houseNumber("s3d")
+                .build()));
     }
 
     @Test
@@ -340,6 +348,7 @@ public class StudioServiceTest {
                 .regon(VALID_REGON)
                 .phoneNumber(VALID_PHONE_NUMBER)
                 .email(VALID_EMAIL)
+                .addressDto(VALID_ADDRESS_DTO)
                 .build();
 
         //when
@@ -359,6 +368,7 @@ public class StudioServiceTest {
                 .regon(VALID_REGON)
                 .phoneNumber(VALID_PHONE_NUMBER)
                 .email(VALID_EMAIL)
+                .addressDto(VALID_ADDRESS_DTO)
                 .build();
 
         //when
@@ -378,6 +388,7 @@ public class StudioServiceTest {
                 .regon("092533555")
                 .phoneNumber(VALID_PHONE_NUMBER)
                 .email(VALID_EMAIL)
+                .addressDto(VALID_ADDRESS_DTO)
                 .build();
 
         //when
@@ -397,6 +408,7 @@ public class StudioServiceTest {
                 .regon(VALID_REGON)
                 .phoneNumber("111222333")
                 .email(VALID_EMAIL)
+                .addressDto(VALID_ADDRESS_DTO)
                 .build();
 
         //when
@@ -416,6 +428,7 @@ public class StudioServiceTest {
                 .regon(VALID_REGON)
                 .phoneNumber(VALID_PHONE_NUMBER)
                 .email("p@x.p")
+                .addressDto(VALID_ADDRESS_DTO)
                 .build();
 
         //when

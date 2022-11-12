@@ -47,29 +47,15 @@ public class StudioService {
 
     public Studio updateStudio(StudioDto studioDto) {
         String messageException = validateStudio(studioDto);
+        messageException += addressService.validateAddress(studioDto.getAddressDto());
         if (messageException.length() > 1) {
             throw new IllegalArgumentException(messageException);
         }
 
-
         Studio studio = studioDao.findById(studioDto.getId())
                 .orElseThrow();
-
-        if (!studio.getName().equals(studioDto.getName())) {
-            studio.setName(studioDto.getName());
-        }
-        if (!studio.getNip().equals(studioDto.getNip())) {
-            studio.setNip(studioDto.getNip());
-        }
-        if (!studio.getRegon().equals(studioDto.getRegon())) {
-            studio.setRegon(studioDto.getRegon());
-        }
-        if (!studio.getPhoneNumber().equals(studioDto.getPhoneNumber())) {
-            studio.setPhoneNumber(studioDto.getPhoneNumber());
-        }
-        if (!studio.getEmail().equals(studioDto.getEmail())) {
-            studio.setEmail(studioDto.getEmail());
-        }
+        reassignValues(studio, studioDto);
+        addressService.updateAddress(studioDto.getAddressDto());
 
         return studioDao.save(studio);
     }
@@ -173,6 +159,24 @@ public class StudioService {
             control = 0;
         }
         return (control == csum);
+    }
+
+    private void reassignValues(Studio studio, StudioDto studioDto) {
+        if (!studio.getName().equals(studioDto.getName())) {
+            studio.setName(studioDto.getName());
+        }
+        if (!studio.getNip().equals(studioDto.getNip())) {
+            studio.setNip(studioDto.getNip());
+        }
+        if (!studio.getRegon().equals(studioDto.getRegon())) {
+            studio.setRegon(studioDto.getRegon());
+        }
+        if (!studio.getPhoneNumber().equals(studioDto.getPhoneNumber())) {
+            studio.setPhoneNumber(studioDto.getPhoneNumber());
+        }
+        if (!studio.getEmail().equals(studioDto.getEmail())) {
+            studio.setEmail(studioDto.getEmail());
+        }
     }
 
 }

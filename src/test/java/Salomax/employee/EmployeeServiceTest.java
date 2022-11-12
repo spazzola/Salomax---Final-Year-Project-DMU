@@ -1,11 +1,16 @@
 package Salomax.employee;
 
+import Salomax.studio.Studio;
+import Salomax.studio.StudioDao;
+import Salomax.userDetails.User;
 import Salomax.userDetails.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
@@ -22,16 +27,19 @@ public class EmployeeServiceTest {
     private String VALID_SURNAME;
     private String VALID_PHONE_NUMBER;
     private String VALID_EMAIL;
-    private Employee VALID_EMPLOYEE;
+    private User VALID_EMPLOYEE;
     private EmployeeService employeeService;
     @Mock
     private EmployeeDao employeeDao;
+    @Mock
+    private StudioDao studioDao;
 
     @Before
     public void setUp() {
         UserService userService = new UserService();
         employeeDao = mock(EmployeeDao.class);
-        employeeService = new EmployeeService(userService, employeeDao);
+        studioDao = mock(StudioDao.class);
+        employeeService = new EmployeeService(userService, employeeDao, studioDao);
 
         VALID_LOGIN = "abc";
         VALID_PASSWORD = "123";
@@ -47,9 +55,11 @@ public class EmployeeServiceTest {
                 .surname(VALID_SURNAME)
                 .phoneNumber(VALID_PHONE_NUMBER)
                 .email(VALID_EMAIL)
+                .workRole(WorkRole.EMPLOYEE)
                 .build();
 
         when(employeeDao.save(Mockito.any(Employee.class))).then(returnsFirstArg());
+        when(studioDao.findById(1L)).thenReturn(Optional.of(new Studio()));
     }
 
 
@@ -57,19 +67,18 @@ public class EmployeeServiceTest {
     public void createEmployeeValidDataShouldPass() {
         //given
         EmployeeDto employeeDto = EmployeeDto.builder()
-                .login("abc")
-                .password("123")
-                .name("xyz")
-                .surname("qwe")
-                .phoneNumber("123456789")
-                .email("test@x.z")
+                .login(VALID_LOGIN)
+                .password(VALID_PASSWORD)
+                .name(VALID_NAME)
+                .surname(VALID_SURNAME)
+                .phoneNumber(VALID_PHONE_NUMBER)
+                .email(VALID_EMAIL)
                 .workRole(WorkRole.EMPLOYEE)
+                .assignedStudioId(1L)
                 .build();
 
-        VALID_EMPLOYEE.setWorkRole(WorkRole.EMPLOYEE);
-
         //when
-        Employee employee = employeeService.createEmployee(employeeDto);
+        User employee = employeeService.createEmployee(employeeDto);
 
         //then
         assertEquals(VALID_EMPLOYEE, employee);
