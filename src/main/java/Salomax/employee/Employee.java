@@ -18,7 +18,8 @@ import java.util.Objects;
 public class Employee extends User {
 
     private int workHours;
-    private String workRole;
+    @Enumerated(EnumType.STRING)
+    private WorkRole workRole;
     private String note;
 
     @OneToOne
@@ -27,7 +28,7 @@ public class Employee extends User {
 
     @Builder
     public Employee(Long id, String login, String password, String name, String surname, String phoneNumber,
-                    String email, int workHours, String workRole, String note, Studio assignedStudio) {
+                    String email, int workHours, WorkRole workRole, String note, Studio assignedStudio) {
         super(id, login, password, name, surname, phoneNumber, email);
         this.workHours = workHours;
         this.workRole = workRole;
@@ -36,7 +37,7 @@ public class Employee extends User {
     }
 
     public void setWorkRole(WorkRole workRole) {
-        this.workRole = workRole.getRole();
+        this.workRole = workRole;
     }
 
 }
