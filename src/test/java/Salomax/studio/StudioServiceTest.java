@@ -138,69 +138,6 @@ public class StudioServiceTest {
     }
 
     @Test
-    public void createStudioNameAsNullShouldThrowError() {
-        //given
-        StudioDto studioDto = StudioDto.builder()
-                .name(null)
-                .nip(VALID_NIP)
-                .regon(VALID_REGON)
-                .phoneNumber(VALID_PHONE_NUMBER)
-                .email(VALID_EMAIL)
-                .addressDto(VALID_ADDRESS_DTO)
-                .build();
-
-        CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
-                .studioDto(studioDto)
-                .employeeDto(VALID_EMPLOYEE_DTO)
-                .build();
-
-        //when then
-        assertThrows(IllegalArgumentException.class, () -> studioService.createStudioAndAdmin(createStudioRequest));
-    }
-
-    @Test
-    public void createStudioNameAsEmptyStringShouldThrowError() {
-        //given
-        StudioDto studioDto = StudioDto.builder()
-                .name("")
-                .nip(VALID_NIP)
-                .regon(VALID_REGON)
-                .phoneNumber(VALID_PHONE_NUMBER)
-                .email(VALID_EMAIL)
-                .addressDto(VALID_ADDRESS_DTO)
-                .build();
-
-        CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
-                .studioDto(studioDto)
-                .employeeDto(VALID_EMPLOYEE_DTO)
-                .build();
-
-        //when then
-        assertThrows(IllegalArgumentException.class, () -> studioService.createStudioAndAdmin(createStudioRequest));
-    }
-
-    @Test
-    public void createStudioNameAsStringWithWhiteSpaceShouldThrowError() {
-        //given
-        StudioDto studioDto = StudioDto.builder()
-                .name(" ")
-                .nip(VALID_NIP)
-                .regon(VALID_REGON)
-                .phoneNumber(VALID_PHONE_NUMBER)
-                .email(VALID_EMAIL)
-                .addressDto(VALID_ADDRESS_DTO)
-                .build();
-
-        CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
-                .studioDto(studioDto)
-                .employeeDto(VALID_EMPLOYEE_DTO)
-                .build();
-
-        //when then
-        assertThrows(IllegalArgumentException.class, () -> studioService.createStudioAndAdmin(createStudioRequest));
-    }
-
-    @Test
     public void createStudioInvalidNipLengthShouldThrowError() {
         //given
         StudioDto studioDto = StudioDto.builder()
@@ -251,48 +188,6 @@ public class StudioServiceTest {
                 .regon("058205732")
                 .phoneNumber(VALID_PHONE_NUMBER)
                 .email(VALID_EMAIL)
-                .addressDto(VALID_ADDRESS_DTO)
-                .build();
-
-        CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
-                .studioDto(studioDto)
-                .employeeDto(VALID_EMPLOYEE_DTO)
-                .build();
-
-        //when then
-        assertThrows(IllegalArgumentException.class, () -> studioService.createStudioAndAdmin(createStudioRequest));
-    }
-
-    @Test
-    public void createStudioTooShortPhoneNumberShouldThrowError() {
-        //given
-        StudioDto studioDto = StudioDto.builder()
-                .name(VALID_STUDIO_NAME)
-                .nip(VALID_NIP)
-                .regon(VALID_REGON)
-                .phoneNumber("1234569")
-                .email(VALID_EMAIL)
-                .addressDto(VALID_ADDRESS_DTO)
-                .build();
-
-        CreateStudioRequest createStudioRequest = CreateStudioRequest.builder()
-                .studioDto(studioDto)
-                .employeeDto(VALID_EMPLOYEE_DTO)
-                .build();
-
-        //when then
-        assertThrows(IllegalArgumentException.class, () -> studioService.createStudioAndAdmin(createStudioRequest));
-    }
-
-    @Test
-    public void createStudioWrongEmailShouldThrowError() {
-        //given
-        StudioDto studioDto = StudioDto.builder()
-                .name(VALID_STUDIO_NAME)
-                .nip(VALID_NIP)
-                .regon(VALID_REGON)
-                .phoneNumber(VALID_PHONE_NUMBER)
-                .email("dsds.pl")
                 .addressDto(VALID_ADDRESS_DTO)
                 .build();
 
