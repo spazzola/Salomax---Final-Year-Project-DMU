@@ -62,22 +62,22 @@ public class AddressService {
 
     public String validateAddress(AddressDto addressDto) {
         String messageException = "";
-        if (!validationService.validateName(addressDto.getCountry())) {
+        if (!validationService.validateString(addressDto.getCountry())) {
             messageException = "Bad value of country. ";
         }
-        if (!validationService.validateName(addressDto.getVoivodeship())) {
+        if (!validationService.validateString(addressDto.getVoivodeship())) {
             messageException = "Bad value of voivodeship. ";
         }
-        if (!validationService.validateName(addressDto.getCity())) {
+        if (!validationService.validateString(addressDto.getCity())) {
             messageException += "Bad value of city. ";
         }
-        if (!validationService.validateName(addressDto.getPostalCode())) {
+        if (!validationService.validateString(addressDto.getPostalCode())) {
             messageException += "Bad value of postal code. ";
         }
-        if (!validationService.validateName(addressDto.getStreet())) {
+        if (!validationService.validateString(addressDto.getStreet())) {
             messageException += "Bad value of street ";
         }
-        if (!validationService.validateName(addressDto.getHouseNumber())) {
+        if (!validationService.validateString(addressDto.getHouseNumber())) {
             messageException += "Bad value of house number. ";
         }
 

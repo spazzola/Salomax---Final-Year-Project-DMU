@@ -75,16 +75,16 @@ public class EmployeeService {
 
     public String validateEmployee(EmployeeDto employeeDto) {
         String messageException = "";
-        if (!validationService.validateName(employeeDto.getLogin())) {
+        if (!validationService.validateString(employeeDto.getLogin())) {
             messageException += "Bad value of login. ";
         }
         if (!validationService.validatePassword(employeeDto.getPassword())) {
             messageException += "Bad value of password. ";
         }
-        if (!validationService.validateName(employeeDto.getName())) {
+        if (!validationService.validateString(employeeDto.getName())) {
             messageException += "Bad value of admin's name. ";
         }
-        if (!validationService.validateName(employeeDto.getSurname())) {
+        if (!validationService.validateString(employeeDto.getSurname())) {
             messageException += "Bad value of admin's surname. ";
         }
         if (!validationService.validatePhoneNumber(employeeDto.getPhoneNumber())) {

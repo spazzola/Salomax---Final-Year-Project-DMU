@@ -80,7 +80,7 @@ public class StudioService {
 
     private String validateStudio(StudioDto studioDto) {
         String messageException = "";
-        if (!validationService.validateName(studioDto.getName())) {
+        if (!validationService.validateString(studioDto.getName())) {
             messageException += "Bad value of studio's name. ";
         }
         if (!validateNIP(studioDto.getNip())) {
