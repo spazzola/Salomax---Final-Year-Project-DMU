@@ -5,8 +5,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class ValidationService {
 
-    public boolean validateName(String name) {
-        return validateString(name);
+    public boolean validateString(String string) {
+        if (string == null) {
+            return false;
+        } else if (string.equals("")) {
+            return false;
+        } else return !string.equals(" ");
     }
 
     public boolean validatePhoneNumber(String phoneNumber) {
@@ -44,14 +48,6 @@ public class ValidationService {
         }
 
         return true;
-    }
-
-    private boolean validateString(String string) {
-        if (string == null) {
-            return false;
-        } else if (string.equals("")) {
-            return false;
-        } else return !string.equals(" ");
     }
 
     private boolean checkIfPasswordContainsSpecialCharacter(String password) {
