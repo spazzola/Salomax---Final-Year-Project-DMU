@@ -1,6 +1,7 @@
 package Salomax.client;
 
-import Salomax.userDetails.User;
+import Salomax.assignedClients.AssignedClients;
+import Salomax.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,7 +17,7 @@ import java.util.List;
 public class Client extends User {
 
     @OneToMany(mappedBy = "client")
-    private List<Salomax.assignedClients.AssignedClients> assignedClients;
+    private List<AssignedClients> assignedClients;
 
     public Client(Long id, String login, String password, String name, String surname,
                   String phoneNumber, String email) {

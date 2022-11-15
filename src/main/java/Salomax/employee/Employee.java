@@ -1,7 +1,7 @@
 package Salomax.employee;
 
 import Salomax.studio.Studio;
-import Salomax.userDetails.User;
+import Salomax.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
