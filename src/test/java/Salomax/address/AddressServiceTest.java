@@ -1,12 +1,10 @@
 package Salomax.address;
 
-import Salomax.employee.Employee;
-import Salomax.userDetails.UserService;
+import Salomax.validation.ValidationService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Optional;
@@ -35,8 +33,8 @@ public class AddressServiceTest {
     @Before
     public void setUp() {
         addressDao = mock(AddressDao.class);
-        UserService userService = new UserService();
-        addressService = new AddressService(userService, addressDao);
+        ValidationService validationService = new ValidationService();
+        addressService = new AddressService(validationService, addressDao);
 
         VALID_COUNTRY = "Jhds";
         VALID_VOIVODESHIP = "asak";

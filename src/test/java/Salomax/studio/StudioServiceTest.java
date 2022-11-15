@@ -2,7 +2,7 @@ package Salomax.studio;
 
 import Salomax.address.*;
 import Salomax.employee.*;
-import Salomax.userDetails.UserService;
+import Salomax.validation.ValidationService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,13 +47,13 @@ public class StudioServiceTest {
         studioDao = mock(StudioDao.class);
         addressDao = mock(AddressDao.class);
         employeeDao = mock(EmployeeDao.class);
-        UserService userService = new UserService();
-        EmployeeService employeeService = new EmployeeService(userService, employeeDao, studioDao);
+        ValidationService validationService = new ValidationService();
+        EmployeeService employeeService = new EmployeeService(validationService, employeeDao, studioDao);
         EmployeeMapper employeeMapper = new EmployeeMapper();
         AddressMapper addressMapper = new AddressMapper();
         StudioMapper studioMapper = new StudioMapper(addressMapper);
-        AddressService addressService = new AddressService(userService, addressDao);
-        studioService = new StudioService(studioDao, employeeDao, addressService, userService, employeeService, studioMapper, employeeMapper);
+        AddressService addressService = new AddressService(validationService, addressDao);
+        studioService = new StudioService(studioDao, employeeDao, addressService, validationService, employeeService, studioMapper, employeeMapper);
 
         VALID_STUDIO_NAME = "BeautyS";
         VALID_NIP = "3818483497";

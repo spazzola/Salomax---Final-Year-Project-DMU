@@ -1,7 +1,6 @@
 package Salomax.address;
 
-import Salomax.studio.StudioDto;
-import Salomax.userDetails.UserService;
+import Salomax.validation.ValidationService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -9,7 +8,7 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class AddressService {
 
-    private UserService userService;
+    private ValidationService validationService;
     private AddressDao addressDao;
 
     public Address createAddress(AddressDto addressDto) {
@@ -63,22 +62,22 @@ public class AddressService {
 
     public String validateAddress(AddressDto addressDto) {
         String messageException = "";
-        if (!userService.validateName(addressDto.getCountry())) {
+        if (!validationService.validateName(addressDto.getCountry())) {
             messageException = "Bad value of country. ";
         }
-        if (!userService.validateName(addressDto.getVoivodeship())) {
+        if (!validationService.validateName(addressDto.getVoivodeship())) {
             messageException = "Bad value of voivodeship. ";
         }
-        if (!userService.validateName(addressDto.getCity())) {
+        if (!validationService.validateName(addressDto.getCity())) {
             messageException += "Bad value of city. ";
         }
-        if (!userService.validateName(addressDto.getPostalCode())) {
+        if (!validationService.validateName(addressDto.getPostalCode())) {
             messageException += "Bad value of postal code. ";
         }
-        if (!userService.validateName(addressDto.getStreet())) {
+        if (!validationService.validateName(addressDto.getStreet())) {
             messageException += "Bad value of street ";
         }
-        if (!userService.validateName(addressDto.getHouseNumber())) {
+        if (!validationService.validateName(addressDto.getHouseNumber())) {
             messageException += "Bad value of house number. ";
         }
 

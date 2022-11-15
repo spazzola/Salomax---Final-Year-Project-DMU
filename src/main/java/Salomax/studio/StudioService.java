@@ -3,7 +3,7 @@ package Salomax.studio;
 import Salomax.address.Address;
 import Salomax.address.AddressService;
 import Salomax.employee.*;
-import Salomax.userDetails.UserService;
+import Salomax.validation.ValidationService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +16,7 @@ public class StudioService {
     private StudioDao studioDao;
     private EmployeeDao employeeDao;
     private AddressService addressService;
-    private UserService userService;
+    private ValidationService validationService;
     private EmployeeService employeeService;
     private StudioMapper studioMapper;
     private EmployeeMapper employeeMapper;
@@ -80,7 +80,7 @@ public class StudioService {
 
     private String validateStudio(StudioDto studioDto) {
         String messageException = "";
-        if (!userService.validateName(studioDto.getName())) {
+        if (!validationService.validateName(studioDto.getName())) {
             messageException += "Bad value of studio's name. ";
         }
         if (!validateNIP(studioDto.getNip())) {
@@ -89,10 +89,10 @@ public class StudioService {
         if (!validateRegon(studioDto.getRegon())) {
             messageException += "Bad value of REGON number. ";
         }
-        if (!userService.validatePhoneNumber(studioDto.getPhoneNumber())) {
+        if (!validationService.validatePhoneNumber(studioDto.getPhoneNumber())) {
             messageException += "Bad value of studio's phone number. ";
         }
-        if (!userService.validateEmail(studioDto.getEmail())) {
+        if (!validationService.validateEmail(studioDto.getEmail())) {
             messageException += "Bad value of studio's email. ";
         }
 

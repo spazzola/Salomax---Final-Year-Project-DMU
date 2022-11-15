@@ -2,7 +2,7 @@ package Salomax.employee;
 
 import Salomax.studio.Studio;
 import Salomax.studio.StudioDao;
-import Salomax.userDetails.UserService;
+import Salomax.validation.ValidationService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class EmployeeService {
 
-    private UserService userService;
+    private ValidationService validationService;
     private EmployeeDao employeeDao;
     private StudioDao studioDao;
 
@@ -33,7 +33,8 @@ public class EmployeeService {
         validate(employeeDto);
 
         Employee admin = buildEmployeeObject(employeeDto);
-        admin.setWorkRole(WorkRole.OWNER);
+        grantPrivileges(admin, WorkRole.OWNER.getRole());
+        //admin.setWorkRole(WorkRole.OWNER);
 
         return employeeDao.save(admin);
     }
@@ -74,22 +75,22 @@ public class EmployeeService {
 
     public String validateEmployee(EmployeeDto employeeDto) {
         String messageException = "";
-        if (!userService.validateName(employeeDto.getLogin())) {
+        if (!validationService.validateName(employeeDto.getLogin())) {
             messageException += "Bad value of login. ";
         }
-        if (!userService.validateName(employeeDto.getPassword())) {
+        if (!validationService.validatePassword(employeeDto.getPassword())) {
             messageException += "Bad value of password. ";
         }
-        if (!userService.validateName(employeeDto.getName())) {
+        if (!validationService.validateName(employeeDto.getName())) {
             messageException += "Bad value of admin's name. ";
         }
-        if (!userService.validateName(employeeDto.getSurname())) {
+        if (!validationService.validateName(employeeDto.getSurname())) {
             messageException += "Bad value of admin's surname. ";
         }
-        if (!userService.validatePhoneNumber(employeeDto.getPhoneNumber())) {
+        if (!validationService.validatePhoneNumber(employeeDto.getPhoneNumber())) {
             messageException += "Bad value of admin's phone number. ";
         }
-        if (!userService.validateEmail(employeeDto.getEmail())) {
+        if (!validationService.validateEmail(employeeDto.getEmail())) {
             messageException += "Bad value of admin's email. ";
         }
 
