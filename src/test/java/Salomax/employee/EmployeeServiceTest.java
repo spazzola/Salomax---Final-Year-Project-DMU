@@ -59,6 +59,16 @@ public class EmployeeServiceTest {
                 .build();
 
         when(employeeDao.save(Mockito.any(Employee.class))).then(returnsFirstArg());
+        when(employeeDao.findById(1L)).thenReturn(Optional.of(Employee.builder()
+                .login(VALID_LOGIN)
+                .password(VALID_PASSWORD)
+                .name(VALID_NAME)
+                .surname(VALID_SURNAME)
+                .phoneNumber(VALID_PHONE_NUMBER)
+                .email(VALID_EMAIL)
+                .workRole(WorkRole.EMPLOYEE)
+                .note("")
+                .build()));
         when(studioDao.findById(1L)).thenReturn(Optional.of(new Studio()));
     }
 
@@ -82,6 +92,190 @@ public class EmployeeServiceTest {
 
         //then
         assertEquals(VALID_EMPLOYEE, employee);
+    }
+
+    @Test
+    public void updateEmployeeCheckIfNameWasUpdated() {
+        //given
+        EmployeeDto employeeDto = EmployeeDto.builder()
+                .id(1L)
+                .name("new name")
+                .surname(VALID_SURNAME)
+                .phoneNumber(VALID_PHONE_NUMBER)
+                .email(VALID_EMAIL)
+                .workRole(WorkRole.EMPLOYEE)
+                .login(VALID_LOGIN)
+                .password(VALID_PASSWORD)
+                .note("")
+                .assignedStudioId(1L)
+                .build();
+
+        //when
+        Employee employee = employeeService.updateEmployee(employeeDto);
+
+        //then
+        assertEquals("new name", employee.getName());
+    }
+
+    @Test
+    public void updateEmployeeCheckIfSurnameWasUpdated() {
+        //given
+        EmployeeDto employeeDto = EmployeeDto.builder()
+                .id(1L)
+                .name(VALID_NAME)
+                .surname("new surname")
+                .phoneNumber(VALID_PHONE_NUMBER)
+                .email(VALID_EMAIL)
+                .workRole(WorkRole.EMPLOYEE)
+                .login(VALID_LOGIN)
+                .password(VALID_PASSWORD)
+                .note("")
+                .assignedStudioId(1L)
+                .build();
+
+        //when
+        Employee employee = employeeService.updateEmployee(employeeDto);
+
+        //then
+        assertEquals("new surname", employee.getSurname());
+    }
+
+    @Test
+    public void updateEmployeeCheckIfPhoneNumberWasUpdated() {
+        //given
+        EmployeeDto employeeDto = EmployeeDto.builder()
+                .id(1L)
+                .name(VALID_NAME)
+                .surname(VALID_SURNAME)
+                .phoneNumber("444444444")
+                .email(VALID_EMAIL)
+                .workRole(WorkRole.EMPLOYEE)
+                .login(VALID_LOGIN)
+                .password(VALID_PASSWORD)
+                .note("")
+                .assignedStudioId(1L)
+                .build();
+
+        //when
+        Employee employee = employeeService.updateEmployee(employeeDto);
+
+        //then
+        assertEquals("444444444", employee.getPhoneNumber());
+    }
+
+    @Test
+    public void updateEmployeeCheckIfMailWasUpdated() {
+        //given
+        EmployeeDto employeeDto = EmployeeDto.builder()
+                .id(1L)
+                .name(VALID_NAME)
+                .surname(VALID_SURNAME)
+                .phoneNumber(VALID_PHONE_NUMBER)
+                .email("newmail@x.l")
+                .workRole(WorkRole.EMPLOYEE)
+                .login(VALID_LOGIN)
+                .password(VALID_PASSWORD)
+                .note("")
+                .assignedStudioId(1L)
+                .build();
+
+        //when
+        Employee employee = employeeService.updateEmployee(employeeDto);
+
+        //then
+        assertEquals("newmail@x.l", employee.getEmail());
+    }
+
+    @Test
+    public void updateEmployeeCheckIfWorkRoleWasUpdated() {
+        //given
+        EmployeeDto employeeDto = EmployeeDto.builder()
+                .id(1L)
+                .name(VALID_NAME)
+                .surname(VALID_SURNAME)
+                .phoneNumber(VALID_PHONE_NUMBER)
+                .email(VALID_EMAIL)
+                .workRole(WorkRole.ADMIN)
+                .login(VALID_LOGIN)
+                .password(VALID_PASSWORD)
+                .note("")
+                .assignedStudioId(1L)
+                .build();
+
+        //when
+        Employee employee = employeeService.updateEmployee(employeeDto);
+
+        //then
+        assertEquals(WorkRole.ADMIN, employee.getWorkRole());
+    }
+
+    @Test
+    public void updateEmployeeCheckIfNoteWasUpdated() {
+        //given
+        EmployeeDto employeeDto = EmployeeDto.builder()
+                .id(1L)
+                .name(VALID_NAME)
+                .surname(VALID_SURNAME)
+                .phoneNumber(VALID_PHONE_NUMBER)
+                .email(VALID_EMAIL)
+                .workRole(WorkRole.EMPLOYEE)
+                .login(VALID_LOGIN)
+                .password(VALID_PASSWORD)
+                .note("new note")
+                .assignedStudioId(1L)
+                .build();
+
+        //when
+        Employee employee = employeeService.updateEmployee(employeeDto);
+
+        //then
+        assertEquals("new note", employee.getNote());
+    }
+
+    @Test
+    public void updateEmployeeCheckIfLoginWasUpdated() {
+        //given
+        EmployeeDto employeeDto = EmployeeDto.builder()
+                .id(1L)
+                .name(VALID_NAME)
+                .surname(VALID_SURNAME)
+                .phoneNumber(VALID_PHONE_NUMBER)
+                .email(VALID_EMAIL)
+                .workRole(WorkRole.EMPLOYEE)
+                .login("newLogin")
+                .password(VALID_PASSWORD)
+                .note("")
+                .assignedStudioId(1L)
+                .build();
+
+        //when
+        Employee employee = employeeService.updateEmployee(employeeDto);
+
+        //then
+        assertEquals("newLogin", employee.getLogin());
+    }
+
+    @Test
+    public void updateEmployeeCheckIfPasswordWasUpdated() {
+        //given
+        EmployeeDto employeeDto = EmployeeDto.builder()
+                .id(1L)
+                .name(VALID_NAME)
+                .surname(VALID_SURNAME)
+                .phoneNumber(VALID_PHONE_NUMBER)
+                .email(VALID_EMAIL)
+                .workRole(WorkRole.EMPLOYEE)
+                .login(VALID_LOGIN)
+                .password("newPassword1!")
+                .note("")
+                .assignedStudioId(1L)
+                .build();
+
+        //when
+        Employee employee = employeeService.updateEmployee(employeeDto);
+
+        //then
+        assertEquals("newPassword1!", employee.getPassword());
     }
 
 }
