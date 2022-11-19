@@ -20,7 +20,7 @@ public class EmployeeService {
         validate(employeeDto);
 
         Employee employee = buildEmployeeObject(employeeDto);
-        grantPrivileges(employee, employeeDto.getWorkRole().getRole());
+        employee.setWorkRole(employeeDto.getWorkRole());
 
         Studio studio = studioDao.findById(employeeDto.getAssignedStudioId())
                         .orElseThrow();
@@ -33,8 +33,7 @@ public class EmployeeService {
         validate(employeeDto);
 
         Employee admin = buildEmployeeObject(employeeDto);
-        grantPrivileges(admin, WorkRole.OWNER.getRole());
-        //admin.setWorkRole(WorkRole.OWNER);
+        admin.setWorkRole(WorkRole.OWNER);
 
         return employeeDao.save(admin);
     }
@@ -113,20 +112,6 @@ public class EmployeeService {
                 .phoneNumber(employeeDto.getPhoneNumber())
                 .email(employeeDto.getEmail())
                 .build();
-    }
-
-    private void grantPrivileges(Employee employee, String workRole) {
-        switch (workRole.toUpperCase()) {
-            case "OWNER":
-                employee.setWorkRole(WorkRole.OWNER);
-                break;
-            case "ADMIN":
-                employee.setWorkRole(WorkRole.ADMIN);
-                break;
-            case "EMPLOYEE":
-                employee.setWorkRole(WorkRole.EMPLOYEE);
-                break;
-        }
     }
 
 }
