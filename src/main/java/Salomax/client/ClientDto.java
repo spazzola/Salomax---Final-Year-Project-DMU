@@ -2,7 +2,7 @@ package Salomax.client;
 
 import Salomax.studio.Studio;
 
-public class ClientDetails {
+public class ClientDto {
 
     private Long id;
     private String note;
