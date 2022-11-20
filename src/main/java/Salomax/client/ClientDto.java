@@ -1,12 +1,16 @@
 package Salomax.client;
 
-import Salomax.studio.Studio;
+import Salomax.user.User;
+import lombok.Builder;
+import lombok.Data;
 
-public class ClientDto {
+@Data
+public class ClientDto extends User {
 
-    private Long id;
-    private String note;
-    private Client client;
-    private Studio assignedStudio;
+    @Builder
+    public ClientDto(Long id, String login, String password, String name, String surname,
+                  String phoneNumber, String email) {
+        super(id, login, password, name, surname, phoneNumber, email);
+    }
 
 }
