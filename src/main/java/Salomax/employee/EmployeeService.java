@@ -81,16 +81,16 @@ public class EmployeeService {
             messageException += "Bad value of password. ";
         }
         if (!validationService.validateString(employeeDto.getName())) {
-            messageException += "Bad value of admin's name. ";
+            messageException += "Bad value of employee's name. ";
         }
         if (!validationService.validateString(employeeDto.getSurname())) {
-            messageException += "Bad value of admin's surname. ";
+            messageException += "Bad value of employee's surname. ";
         }
         if (!validationService.validatePhoneNumber(employeeDto.getPhoneNumber())) {
-            messageException += "Bad value of admin's phone number. ";
+            messageException += "Bad value of employee's phone number. ";
         }
         if (!validationService.validateEmail(employeeDto.getEmail())) {
-            messageException += "Bad value of admin's email. ";
+            messageException += "Bad value of employee's email. ";
         }
 
         return messageException;
