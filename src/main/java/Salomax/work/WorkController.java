@@ -18,7 +18,7 @@ public class WorkController {
         return workMapper.toDto(work);
     }
 
-    @PostMapping("/update")
+    @PutMapping("/update")
     public WorkDto updateWork(@RequestBody WorkDto workDto) {
         Work work = workService.updateWork(workDto);
         return workMapper.toDto(work);
