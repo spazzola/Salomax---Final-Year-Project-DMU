@@ -31,6 +31,9 @@ public class Cost {
     private double taxValue;
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm", shape = JsonFormat.Shape.STRING)
     private LocalDateTime addedDate;
+
+    @ManyToOne
+    @JoinColumn(name = "assigned_studio_fk")
     private Studio assignedStudio;
 
 

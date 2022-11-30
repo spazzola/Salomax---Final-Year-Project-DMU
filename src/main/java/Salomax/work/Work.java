@@ -6,8 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Objects;
 
@@ -19,6 +18,9 @@ import java.util.Objects;
 @AllArgsConstructor
 public class Work {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
     private String name;
     private BigDecimal price;
@@ -26,6 +28,9 @@ public class Work {
     private byte hoursDuration;
     private byte minutesDuration;
     private String iconName;
+
+    @ManyToOne
+    @JoinColumn(name = "assigned_studio_fk")
     private Studio assignedStudio;
 
     @Override
