@@ -67,10 +67,10 @@ public class WorkService {
 
     private void validate(WorkDto workDto) {
         String messageException = "";
-        if (!validationService.validateString(workDto.getName())) {
+        if (workDto.getName() == null || !validationService.validateString(workDto.getName())) {
             messageException += "Bad value of work's name. ";
         }
-        if (workDto.getPrice().compareTo(BigDecimal.ZERO) < 0) {
+        if (workDto.getPrice() == null || workDto.getPrice().compareTo(BigDecimal.ZERO) < 0) {
             messageException += "Price cannot be lower than zero";
         }
         if (workDto.getPrice().compareTo(BigDecimal.valueOf(999999999)) > 0) {
@@ -88,14 +88,13 @@ public class WorkService {
         if (workDto.getMinutesDuration() > 60) {
             messageException += "Bad value of minutesDuration. It cannot be bigger than 60min. ";
         }
-        if (!validationService.validateString(workDto.getIconName())) {
+        if (workDto.getIconName() == null || !validationService.validateString(workDto.getIconName())) {
             messageException += "Bad value of iconName. ";
         }
 
         if (messageException.length() > 1) {
             throw new IllegalArgumentException(messageException);
         }
-
     }
 
 }
