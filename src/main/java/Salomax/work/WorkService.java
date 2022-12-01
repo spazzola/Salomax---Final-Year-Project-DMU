@@ -65,6 +65,9 @@ public class WorkService {
         return workDao.save(work);
     }
 
+    public void deleteWork(Long id) {
+        workDao.deleteById(id);
+    }
     private void validate(WorkDto workDto) {
         String messageException = "";
         if (workDto.getName() == null || !validationService.validateString(workDto.getName())) {
