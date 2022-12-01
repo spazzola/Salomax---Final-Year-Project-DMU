@@ -14,6 +14,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -68,6 +70,7 @@ public class CostServiceTest {
                 .addedDate(VALID_ADDED_DATE)
                 .build()));
         when(costDao.save(Mockito.any(Cost.class))).then(returnsFirstArg());
+        when(costDao.saveAll(Mockito.any(List.class))).thenReturn(List.of(VALID_COST, VALID_COST));
     }
 
 
@@ -188,6 +191,36 @@ public class CostServiceTest {
 
         //then
         assertEquals(LocalDateTime.of(2023, Month.JANUARY, 12, 0, 0), cost.getAddedDate());
+    }
+
+    @Test
+    public void createCostsValidDataShouldPass() {
+        //given
+        CostDto costDto1 = CostDto.builder()
+                .name(VALID_NAME)
+                .price(VALID_PRICE)
+                .quantity(VALID_QUANTITY)
+                .taxValue(VALID_TAX_VALUE)
+                .addedDate(VALID_ADDED_DATE)
+                .assignedStudioId(1L)
+                .build();
+
+        CostDto costDto2 = CostDto.builder()
+                .name(VALID_NAME)
+                .price(VALID_PRICE)
+                .quantity(VALID_QUANTITY)
+                .taxValue(VALID_TAX_VALUE)
+                .addedDate(VALID_ADDED_DATE)
+                .assignedStudioId(1L)
+                .build();
+
+        List<CostDto> costsDto = Arrays.asList(costDto1, costDto2);
+
+        //when
+        List<Cost> costs = costService.createCosts(costsDto);
+
+        //then
+        assertEquals(costsDto.size(), costs.size());
     }
 
 }
