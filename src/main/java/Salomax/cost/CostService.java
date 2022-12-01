@@ -8,6 +8,8 @@ import lombok.Data;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Data
@@ -25,16 +27,22 @@ public class CostService {
         Studio studio = studioDao.findById(costDto.getAssignedStudioId())
                 .orElseThrow();
 
-        Cost cost = Cost.builder()
-                .name(costDto.getName())
-                .price(costDto.getPrice())
-                .quantity(costDto.getQuantity())
-                .taxValue(costDto.getTaxValue())
-                .addedDate(costDto.getAddedDate())
-                .assignedStudio(studio)
-                .build();
+        Cost cost = buildCost(costDto, studio);
 
         return costDao.save(cost);
+    }
+
+    public List<Cost> createCosts(List<CostDto> costsDto) {
+        costsDto.forEach(this::validate);
+
+        Studio studio = studioDao.findById(costsDto.get(0).getAssignedStudioId())
+                .orElseThrow();
+
+        List<Cost> costs = costsDto.stream()
+                .map(costDto -> buildCost(costDto, studio))
+                .collect(Collectors.toList());
+
+        return costDao.saveAll(costs);
     }
 
     public Cost updateCost(CostDto costDto) {
@@ -62,8 +70,15 @@ public class CostService {
         return costDao.save(cost);
     }
 
+    public void deleteCost(Long id) {
+        costDao.deleteById(id);
+    }
+
     private void validate(CostDto costDto) {
         String messageException = "";
+        if (costDto.getAssignedStudioId() == null || costDto.getAssignedStudioId() <= 0) {
+            messageException += "Bad value of assignedStudioId. ";
+        }
         if (!validationService.validateString(costDto.getName())) {
             messageException += "Bad value of cost's name. ";
         }
@@ -73,6 +88,21 @@ public class CostService {
         if (costDto.getQuantity() <= 0) {
             messageException += "Quantity must be greater than 0. ";
         }
+
+        if (messageException.length() > 1) {
+            throw new IllegalArgumentException(messageException);
+        }
+    }
+
+    private Cost buildCost(CostDto costDto, Studio studio) {
+        return Cost.builder()
+                .name(costDto.getName())
+                .price(costDto.getPrice())
+                .quantity(costDto.getQuantity())
+                .taxValue(costDto.getTaxValue())
+                .addedDate(costDto.getAddedDate())
+                .assignedStudio(studio)
+                .build();
     }
 
 }
