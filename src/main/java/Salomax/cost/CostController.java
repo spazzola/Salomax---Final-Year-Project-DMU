@@ -20,7 +20,7 @@ public class CostController {
         return costMapper.toDto(cost);
     }
 
-    @PutMapping("/updateCost")
+    @PutMapping("/update")
     public CostDto updateCost(@RequestBody CostDto costDto) {
         Cost cost = costService.updateCost(costDto);
         return costMapper.toDto(cost);
