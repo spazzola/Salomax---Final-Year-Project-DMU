@@ -1,6 +1,7 @@
 package Salomax.cost;
 
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @AllArgsConstructor
@@ -25,5 +26,10 @@ public class CostController {
         return costMapper.toDto(cost);
     }
 
+    @DeleteMapping("/delete")
+    public HttpStatus deleteCost(@RequestParam("id") Long id) {
+        costService.deleteCost(id);
+        return HttpStatus.OK;
+    }
 
 }
